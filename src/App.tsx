@@ -9,6 +9,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
+const medicareAdvantageOption = ["Clover", "HealthNet", "AUnicare"];
+
 function App() {
   const [BillableValue, setBillableValue] = useState("ppo");
 
@@ -28,8 +38,19 @@ function App() {
     medicareAdvantage: z.string(),
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeBill = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBillableValue((event.target as HTMLInputElement).value);
+  };
+
+  const [medicareAdvantage, setMedicareAdvantage] = useState<string[]>([]);
+
+  const handleChangeMedicareOption = (
+    event: SelectChangeEvent<typeof medicareAdvantage>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    setMedicareAdvantage(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
@@ -42,7 +63,7 @@ function App() {
       <div>
         <FormControl>
           <FormLabel>Billable Option</FormLabel>
-          <RadioGroup value={BillableValue} onChange={handleChange}>
+          <RadioGroup value={BillableValue} onChange={handleChangeBill}>
             <FormControlLabel
               value="ppo"
               control={<Radio />}
@@ -55,6 +76,39 @@ function App() {
             />
           </RadioGroup>
         </FormControl>
+      </div>
+      <div>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker />
+        </LocalizationProvider>
+      </div>
+      <div>
+        <FormControl>
+          <Select
+            multiple
+            displayEmpty
+            value={medicareAdvantage}
+            onChange={handleChangeMedicareOption}
+            input={<OutlinedInput />}
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>select...</em>;
+              }
+
+              return selected.join(", ");
+            }}
+            inputProps={{ "aria-label": "Without label" }}
+          >
+            {medicareAdvantageOption.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div>
+        <Input type="text" />
       </div>
       <div>
         <button type="submit">제출</button>
