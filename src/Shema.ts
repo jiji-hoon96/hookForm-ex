@@ -1,8 +1,9 @@
-import { date, z } from "zod";
+import { z } from "zod";
 
 export type PatientSchemaType = z.infer<typeof patientSchema>;
 
 const phoneNumberRegex = /^010\d{8}$/;
+const nameRegex = /^[A-Za-z]+$/;
 
 export const patientSchema = z.object({
   phoneNumber: z
@@ -16,9 +17,13 @@ export const patientSchema = z.object({
     required_error: "필수 입력사항입니다",
   }),
 
-  date: date(),
+  date: z.date({ required_error: "필수 입력사항입니다" }),
 
-  selectBox: z.string(),
+  selectBox: z.enum(["box1", "box2", "box3"], {
+    required_error: "필수 입력사항입니다",
+  }),
 
-  name: z.string(),
+  name: z
+    .string({ required_error: "필수 입력사항입니다" })
+    .refine((value) => nameRegex.test(value)),
 });
