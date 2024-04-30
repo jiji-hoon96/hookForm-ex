@@ -25,5 +25,5 @@ export const patientSchema = z.object({
 
   name: z
     .string({ required_error: "필수 입력사항입니다" })
-    .refine((value) => nameRegex.test(value)),
+    .refine((value) => nameRegex.test(value), "영문으로 입력해주세요"),
 });
