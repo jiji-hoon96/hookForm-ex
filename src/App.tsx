@@ -1,6 +1,13 @@
 import { PatientSchemaType, patientSchema } from "./Shema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input, MenuItem, Select } from "@mui/material";
+import {
+  Radio,
+  FormControlLabel,
+  Input,
+  MenuItem,
+  RadioGroup,
+  Select,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 
 function App() {
@@ -24,6 +31,7 @@ function App() {
             },
           })}
         />
+        <button>중복검사</button>
 
         {errors.phoneNumber && (
           <p style={{ color: "red" }}>{errors.phoneNumber.message}</p>
@@ -31,17 +39,23 @@ function App() {
       </section>
 
       <section>
-        <Select
-          {...register("selectOption", {
-            setValueAs: (value) => {
-              value === "" ? undefined : value;
-            },
-          })}
-        >
-          <MenuItem value='option1'>option1</MenuItem>
-          <MenuItem value='option2'>option2</MenuItem>
-          <MenuItem value='option3'>option3</MenuItem>
-        </Select>
+        <RadioGroup {...register("selectOption")} row>
+          <FormControlLabel
+            value='option1'
+            control={<Radio />}
+            label='option1'
+          />
+          <FormControlLabel
+            value='option2'
+            control={<Radio />}
+            label='option2'
+          />
+          <FormControlLabel
+            value='option3'
+            control={<Radio />}
+            label='option3'
+          />
+        </RadioGroup>
         {errors.selectOption && (
           <p style={{ color: "red " }}>{errors.selectOption.message}</p>
         )}
@@ -66,7 +80,11 @@ function App() {
               value === "" ? undefined : value;
             },
           })}
+          defaultValue='box4'
         >
+          <MenuItem disabled value='box4'>
+            선택해주세요
+          </MenuItem>
           <MenuItem value='box1'>box1</MenuItem>
           <MenuItem value='box2'>box2</MenuItem>
           <MenuItem value='box3'>box3</MenuItem>
@@ -88,6 +106,7 @@ function App() {
       </section>
 
       <section>
+        <button type='reset'>리셋</button>
         <button type='submit'>제출</button>
       </section>
     </form>
