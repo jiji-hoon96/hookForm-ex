@@ -59,7 +59,10 @@ function App() {
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <Input type="number" {...register("phone")} />
+          <Input
+            type="number"
+            {...register("phone", { required: "필수 입력값입니다" })}
+          />
           {errors.phone?.type === "required" && (
             <p role="alert">{errors.phone.message}</p>
           )}
@@ -119,7 +122,7 @@ function App() {
         <div>
           <Input
             type="text"
-            {...register("name", { required: "다시 입력해주세요" })}
+            {...register("name", { required: "필수 입력값입니다" })}
           />
           {errors.name?.type === "required" && (
             <p role="alert">{errors.name.message}</p>
