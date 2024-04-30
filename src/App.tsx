@@ -24,13 +24,7 @@ function App() {
       onSubmit={handleSubmit((data: PatientSchemaType) => console.log(data))}
     >
       <section>
-        <Input
-          {...register("phoneNumber", {
-            setValueAs: (value) => {
-              value === "" ? undefined : value;
-            },
-          })}
-        />
+        <Input {...register("phoneNumber")} />
         <button>중복검사</button>
 
         {errors.phoneNumber && (
@@ -62,14 +56,7 @@ function App() {
       </section>
 
       <section>
-        <Input
-          type='date'
-          {...register("date", {
-            setValueAs: (value) => {
-              value === "" ? undefined : value;
-            },
-          })}
-        />
+        <Input type='date' {...register("date")} />
         {errors.date && <p style={{ color: "red" }}>{errors.date.message}</p>}
       </section>
 
@@ -95,13 +82,7 @@ function App() {
       </section>
 
       <section>
-        <Input
-          {...register("name", {
-            setValueAs: (value) => {
-              value === "" ? undefined : value;
-            },
-          })}
-        />
+        <Input {...register("name")} />
         {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
       </section>
 

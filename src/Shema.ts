@@ -18,7 +18,7 @@ export const patientSchema = z.object({
     invalid_type_error: "필수 입력사항입니다",
   }),
 
-  date: z.date({ required_error: "필수 입력사항입니다" }),
+  date: z.string({ required_error: "필수 입력사항입니다" }).date(),
 
   selectBox: z.enum(["box1", "box2", "box3", "box4"], {
     required_error: "필수 입력사항입니다",
