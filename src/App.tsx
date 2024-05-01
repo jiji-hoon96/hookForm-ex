@@ -13,12 +13,14 @@ import { useForm } from "react-hook-form";
 function App() {
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<PatientSchemaType>({
     resolver: zodResolver(patientSchema),
   });
 
+  console.log(watch());
   return (
     <form
       onSubmit={handleSubmit((data: PatientSchemaType) => console.log(data))}
