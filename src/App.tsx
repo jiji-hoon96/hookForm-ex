@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 
+const selectValue = ["box1", "box2", "box3"];
 const radioValue = ["option1", "option2", "option3"];
-
 function App() {
   const {
     register,
@@ -23,6 +23,7 @@ function App() {
   });
 
   console.log(watch());
+
   return (
     <form
       onSubmit={handleSubmit((data: PatientSchemaType) => console.log(data))}
@@ -38,12 +39,13 @@ function App() {
 
       <section>
         <RadioGroup row>
-          {radioValue.map((value) => (
+          {radioValue.map((value, index) => (
             <FormControlLabel
-              {...register("selectOption")}
+              key={index}
               value={value}
               control={<Radio />}
               label={value}
+              {...register("selectOption")}
             />
           ))}
         </RadioGroup>
@@ -64,14 +66,16 @@ function App() {
               value === "" ? undefined : value;
             },
           })}
-          defaultValue='box4'
+          defaultValue='defaultValue'
         >
-          <MenuItem disabled value='box4'>
+          <MenuItem disabled value='defaultValue'>
             선택해주세요
           </MenuItem>
-          <MenuItem value='box1'>box1</MenuItem>
-          <MenuItem value='box2'>box2</MenuItem>
-          <MenuItem value='box3'>box3</MenuItem>
+          {selectValue.map((value, index) => (
+            <MenuItem key={index} value={value}>
+              {value}
+            </MenuItem>
+          ))}
         </Select>
         {errors.selectBox && (
           <p style={{ color: "red" }}>{errors.selectBox.message}</p>
