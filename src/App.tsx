@@ -1,4 +1,4 @@
-import { PatientSchemaType, patientSchema } from "./Shema";
+import { PatientSchemaType, patientSchema } from "./Schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Radio,
@@ -8,8 +8,13 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { Controller, useForm } from "react-hook-form";
 
+const dateFormat = dayjs().format("DD/MM/YYYY");
 const selectValue = ["box1", "box2", "box3"];
 const radioValue = ["option1", "option2", "option3"];
 function App() {
@@ -17,6 +22,7 @@ function App() {
     register,
     watch,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<PatientSchemaType>({
     resolver: zodResolver(patientSchema),
@@ -59,6 +65,26 @@ function App() {
 
       <section>
         <Input type='date' {...register("date")} />
+        <Controller
+          control={control}
+          name='date'
+          render={({ field }) => (
+            <LocalizationProvider dateAdapter={AdapterDayjs} dateFormats={MM/>}>
+              <DatePicker
+                {...field}
+                format='MM/DD/YYYY'
+                slotProps={{
+                  textField: {
+                    variant: "standard",
+                  },
+                }}
+                onChange={(date) => {
+                  AdapterDayjs.format(date, "MM/DD/YYYY");
+                }}
+              />
+            </LocalizationProvider>
+          )}
+        />
         {errors.date && <p style={{ color: "red" }}>{errors.date.message}</p>}
       </section>
 
