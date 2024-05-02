@@ -29,7 +29,10 @@ function App() {
       onSubmit={handleSubmit((data: PatientSchemaType) => console.log(data))}
     >
       <section>
-        <Input {...register("phoneNumber")} />
+        <Input
+          {...register("phoneNumber")}
+          onChange={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}
+        />
         <button>중복검사</button>
 
         {errors.phoneNumber && (
