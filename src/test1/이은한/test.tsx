@@ -12,7 +12,7 @@ import { PatientSchemaType, patientSchema } from "./testSchema";
 
 const selectValue = ["box1", "box2", "box3"];
 const radioValue = ["option1", "option2", "option3"];
-function App() {
+function TestEH() {
   const {
     register,
     watch,
@@ -102,4 +102,4 @@ function App() {
   );
 }
 
-export default App;
+export default TestEH;
