@@ -16,7 +16,7 @@ export const userFormSchema = z.object({
       message: "0으로 시작하는 최소 9자리 이상의 숫자를 입력해주세요.",
     })
     .max(11, { message: "11자리 이하로 입력해주세요." }),
-  born: z.string().date(),
+  birth: z.string(),
   billableOption: z.string(),
   medicareAdvantage: z.string().min(2),
 });

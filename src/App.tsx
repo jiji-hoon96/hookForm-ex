@@ -22,7 +22,7 @@ const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
 function App() {
   const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
   const [medicareAdvantage, setMedicareAdvantage] = useState<string>();
-  const [dateValue, setDateValue] = useState<Dayjs | null>(null);
+  const [dateValue, setDateValue] = useState<Date | string>("2021-10-10");
   const {
     register,
     handleSubmit,
@@ -42,15 +42,18 @@ function App() {
     setMedicareAdvantage(value);
   };
 
-  const handleChangeDate = (newDateValue: Dayjs) => {
-    console.log(newDateValue);
-    // if (dateValue) {
-    //   const dayjsDate = dateValue as Dayjs;
-    //   console.log(dayjsDate);
-    //   setDateValue(dayjsDate);
-    // } else {
-    //   setDateValue(null);
-    // }
+  const handleChangeDate = (event) => {
+    console.log(event.format("MM/DD/YYYY"));
+    setDateValue(event.format("MM/DD/YYYY"));
+  };
+
+  const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    const regExp = /[^a-zA-Z]/g;
+    const ele = event.target;
+    if (regExp.test(ele.value)) {
+      ele.value = ele.value.replace(regExp, "");
+    }
   };
 
   const onSubmit: SubmitHandler<UserFormSchema> = (data) => console.log(data);
@@ -88,12 +91,14 @@ function App() {
         </div>
         <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <input {...register("birth")} hidden />
             <DatePicker
-              value={dateValue}
-              {...register("born")}
-              // onChange={handleChangeDate(newDateValue)}
+              // value={dateValue}
+              onChange={(e) => handleChangeDate(e)}
             />
-            {errors.born?.type === "akr"}
+            {errors.birth?.type === "required" && (
+              <p role="alert">{errors.birth.message}</p>
+            )}
           </LocalizationProvider>
         </div>
         <div>
@@ -123,6 +128,7 @@ function App() {
           <Input
             type="text"
             {...register("name", { required: "필수 입력값입니다" })}
+            onChange={handleChangeName}
           />
           {errors.name?.type === "required" && (
             <p role="alert">{errors.name.message}</p>
