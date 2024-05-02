@@ -49,7 +49,7 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Medicare Number*</InputLabel>
-          <Input />
+          <Input required />
           <Button variant='filled'>Medicare Check</Button>
         </div>
 

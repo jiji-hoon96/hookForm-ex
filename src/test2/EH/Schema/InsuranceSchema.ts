@@ -6,6 +6,21 @@ const phoneNumberRegex = /^010\d{8}$/;
 const nameRegex = /^[A-Za-z]+$/;
 
 export const insuranceSchema = z.object({
+  medicareNumber: z.string().min(1, "This field is required."),
+
+  billableOption: z.enum(["Medicare PPO", "Medicare HMO"], {
+    invalid_type_error: "This field is required.",
+  }),
+
+  effectiveStartDate: z.coerce.date(),
+
+  medicareAdvantage: z.enum(["box1", "box2", "box3", "defaultValue"], {
+    required_error: "This field is required.",
+  }),
+
+  medicareAdvantageGroupNumber: z.string(),
+  medicareAdvantageIndividualNumber: z.string(),
+
   phoneNumber: z
     .string()
     .min(1, "필수 입력사항입니다")
