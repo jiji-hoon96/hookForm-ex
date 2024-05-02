@@ -86,7 +86,12 @@ function App() {
       </section>
 
       <section>
-        <Input {...register("name")} />
+        <Input
+          {...register("name")}
+          onChange={(e) => {
+            e.target.value = e.target.value.replace(/[^A-Za-z]/g, "");
+          }}
+        />
         {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
       </section>
 
