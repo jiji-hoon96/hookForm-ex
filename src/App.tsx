@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 
+const radioValue = ["option1", "option2", "option3"];
+
 function App() {
   const {
     register,
@@ -33,22 +35,15 @@ function App() {
       </section>
 
       <section>
-        <RadioGroup {...register("selectOption")} row>
-          <FormControlLabel
-            value='option1'
-            control={<Radio />}
-            label='option1'
-          />
-          <FormControlLabel
-            value='option2'
-            control={<Radio />}
-            label='option2'
-          />
-          <FormControlLabel
-            value='option3'
-            control={<Radio />}
-            label='option3'
-          />
+        <RadioGroup row>
+          {radioValue.map((value) => (
+            <FormControlLabel
+              {...register("selectOption")}
+              value={value}
+              control={<Radio />}
+              label={value}
+            />
+          ))}
         </RadioGroup>
         {errors.selectOption && (
           <p style={{ color: "red " }}>{errors.selectOption.message}</p>
