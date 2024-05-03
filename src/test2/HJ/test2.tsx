@@ -1,5 +1,7 @@
 import { useState } from "react";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PatientFormSchema, patientFormSchema } from "./test2Schema";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
@@ -16,6 +18,13 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 
 function Test2HJ() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
+
   const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
   const [medicareAdvantage, setMedicareAdvantage] = useState<string>("");
   const [checkedLTC, setCheckedLTC] = useState<boolean>(false);
@@ -85,6 +94,7 @@ function Test2HJ() {
       target: { value },
     } = event;
     setFacility(value);
+    setSelectRoomNumber("");
   };
 
   const handleChangeSelectRoomNumber = (
@@ -162,9 +172,12 @@ function Test2HJ() {
     setRelationship(value);
   };
 
+  const onSubmit: SubmitHandler<PatientFormSchema> = (data) =>
+    console.log(data);
+
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section>
           <div
             style={{
