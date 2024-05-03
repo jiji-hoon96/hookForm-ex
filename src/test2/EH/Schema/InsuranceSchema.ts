@@ -3,52 +3,59 @@ import { z } from "zod";
 export type InsuranceSchemaType = z.infer<typeof insuranceSchema>;
 
 export const insuranceSchema = z.object({
-  requiredInput: z.string().min(1, "This field is required."),
+  medicareNumber: z.string().min(1, "This field is required."),
 
-  unrequiredInput: z.string(),
+  // emailAddress: z.string().min(1, "This field is required.").email(),
 
-  emailAddress: z.string().min(1, "This field is required.").email(),
+  // height: z.string(),
 
-  height: z.string(),
+  // date: z.string().date(),
 
-  date: z.coerce.date(),
+  // billableOption: z.enum(["Medicare PPO", "Medicare HMO"], {}),
 
-  billableOption: z.enum(["Medicare PPO", "Medicare HMO"], {}),
+  // medicareAdvantage: z.enum(["box1", "box2", "box3", "defaultValue"], {
+  //   required_error: "This field is required.",
+  // }),
 
-  medicareAdvantage: z.enum(["box1", "box2", "box3", "defaultValue"], {
-    required_error: "This field is required.",
-  }),
+  // facility: z.enum(["box1", "box2", "box3"], {
+  //   message: "This field is required.",
+  // }),
 
-  facility: z.enum(["box1", "box2", "box3"], {
-    message: "This field is required.",
-  }),
-  roomNo: z.enum(["box1", "box2", "box3"], {
-    message: "This field is required.",
-  }),
+  // roomNo: z.enum(["box1", "box2", "box3"], {
+  //   message: "This field is required.",
+  // }),
 
-  clinicBranch: z.enum(["box1", "box2", "box3"], {
-    message: "This field is required.",
-  }),
+  // clinicBranch: z.enum(["box1", "box2", "box3"], {
+  //   message: "This field is required.",
+  // }),
 
-  suffix: z.enum(["box1", "box2", "box3", "defaultValue"]),
+  // lastName: z.string().min(1, "This field is required."),
 
-  gender: z.enum(["male", "female", "X"], {
-    message: "This field is required.",
-  }),
+  // firstName: z.string().min(1, "This field is required."),
 
-  primaryLanguage: z.enum(["Korean", "English", "Spanish", "defaultValue"]),
+  // suffix: z.enum(["box1", "box2", "box3", "defaultValue"]),
 
-  dXCode: z.enum(["box1", "box2", "box3"], {
-    message: "This field is required.",
-  }),
+  // gender: z.enum(["male", "female", "X"], {
+  //   message: "This field is required.",
+  // }),
 
-  primaryPhysician: z.enum(["box1", "box2", "box3"], {
-    message: "This field is required.",
-  }),
+  // ehrID: z.string().min(1, "This field is required."),
 
-  conditions: z.enum(["box1", "box2", "box3", "defaultValue"]),
+  // primaryLanguage: z.enum(["Korean", "English", "Spanish", "defaultValue"]),
 
-  phoneType: z.enum(["Home", "Work", "Mobile"], {
-    message: "This field is required.",
-  }),
+  // dXCode: z.enum(["box1", "box2", "box3"], {
+  //   message: "This field is required.",
+  // }),
+
+  // primaryPhysician: z.enum(["box1", "box2", "box3"], {
+  //   message: "This field is required.",
+  // }),
+
+  // conditions: z.enum(["box1", "box2", "box3", "defaultValue"]),
+
+  // phoneType: z.enum(["Home", "Work", "Mobile"], {
+  //   message: "This field is required.",
+  // }),
+
+  // phoneNumber: z.string().min(1, "This field is required."),
 });
