@@ -5,10 +5,6 @@ const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
 const onlyAlphabetRegex = /^[a-zA-Z]+$/;
 
 export const patientFormSchema = z.object({
-  name: z
-    .string()
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." })
-    .min(2, { message: "이름은 최소 2자리 이상이어야 합니다." }),
   phone: z
     .string()
     .regex(phoneRegex, "핸드폰 번호 형식이 아닙니다.")
@@ -19,16 +15,18 @@ export const patientFormSchema = z.object({
 
   billableOption: z.string(),
   medicareAdvantage: z.string().min(2),
+  facility: z.string({ message: "This field is required." }).min(1),
+  selectRoomNumber: z.string({ message: "This field is required." }).min(1),
   clinicBranch: z.string().min(1, { message: "This field is required." }),
   lastName: z
-    .string(z.string({ message: "This field is required." }))
+    .string({ message: "This field is required." })
     .min(1)
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
   firstName: z
-    .string(z.string({ message: "This field is required." }))
+    .string({ message: "This field is required." })
     .min(1)
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
-  MiddleName: z
+  middleName: z
     .string()
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." })
     .min(1)
@@ -37,8 +35,10 @@ export const patientFormSchema = z.object({
   gender: z.string({ message: "This field is required." }),
   birth: z.string({ message: "This field is required." }),
   height: z.number({ message: "height must be a number." }).optional(),
+  language: z.string().optional(),
   primaryLanguage: z.string().optional(),
   ehrId: z.string({ message: "This field is required." }).min(1),
+  physician: z.string({ message: "This field is required." }).min(1),
   dxCode: z.string({ message: "This field is required." }).min(1),
   primaryPhysician: z.string({ message: "This field is required." }).min(1),
   patientMedication: z.string().optional(),

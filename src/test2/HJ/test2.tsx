@@ -24,6 +24,7 @@ function Test2HJ() {
     watch,
     formState: { errors },
   } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
+  console.log(watch("gender"));
 
   const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
   const [medicareAdvantage, setMedicareAdvantage] = useState<string>("");
@@ -171,6 +172,11 @@ function Test2HJ() {
     } = event;
     setRelationship(value);
   };
+  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const day = event.target.value.toString().split("-");
+    const formatDay = `${day[1]}/${day[2]}/${day[0]}`;
+    console.log(formatDay);
+  };
 
   const onSubmit: SubmitHandler<PatientFormSchema> = (data) =>
     console.log(data);
@@ -267,7 +273,7 @@ function Test2HJ() {
                 <Select
                   labelId="facility"
                   value={facility}
-                  // {...register("facility")}
+                  {...register("facility")}
                   onChange={handleChangeFacility}
                   displayEmpty
                   renderValue={
@@ -290,7 +296,7 @@ function Test2HJ() {
                 <Select
                   labelId="selectRoomNumber"
                   value={selectRoomNumber}
-                  // {...register("selectRoomNumber")}
+                  {...register("selectRoomNumber")}
                   onChange={handleChangeSelectRoomNumber}
                   displayEmpty
                   renderValue={
@@ -321,9 +327,8 @@ function Test2HJ() {
             <Select
               labelId="clinicBranch"
               value={clinicBranch}
-              // {...register("medicareAdvantage")}
+              {...register("clinicBranch")}
               onChange={handleChangeClinicBranch}
-              // input={<OutlinedInput label="Clinic branch" />}
               displayEmpty
               renderValue={
                 clinicBranch !== "" ? undefined : () => <p>Select...</p>
@@ -342,15 +347,30 @@ function Test2HJ() {
           <div>
             <InputLabel htmlFor="lastName">
               Last Name *
-              <TextField variant="standard" type="text" id="lastName" />
+              <TextField
+                variant="standard"
+                type="text"
+                id="lastName"
+                {...register("lastName")}
+              />
             </InputLabel>
             <InputLabel htmlFor="firstName">
               First Name *
-              <TextField variant="standard" type="text" id="firstName" />
+              <TextField
+                variant="standard"
+                type="text"
+                id="firstName"
+                {...register("firstName")}
+              />
             </InputLabel>
             <InputLabel htmlFor="middleName">
               Middle Name
-              <TextField variant="standard" type="text" id="middleName" />
+              <TextField
+                variant="standard"
+                type="text"
+                id="middleName"
+                {...register("middleName")}
+              />
             </InputLabel>
 
             <FormControl>
@@ -358,7 +378,7 @@ function Test2HJ() {
               <Select
                 labelId="suffix"
                 value={suffix}
-                // {...register("medicareAdvantage")}
+                {...register("suffix")}
                 onChange={handleChangeSuffix}
                 displayEmpty
                 renderValue={suffix !== "" ? undefined : () => <p>Select...</p>}
@@ -379,9 +399,8 @@ function Test2HJ() {
               <Select
                 labelId="gender"
                 value={gender}
-                // {...register("medicareAdvantage")}
+                {...register("gender")}
                 onChange={handleChangeGender}
-                // input={<OutlinedInput label="Clinic branch" />}
                 displayEmpty
                 renderValue={gender !== "" ? undefined : () => <p>Select...</p>}
               >
@@ -397,19 +416,22 @@ function Test2HJ() {
             </FormControl>
 
             <InputLabel htmlFor="birth">Date Of Birth</InputLabel>
-            <Input id="birth" type="date"></Input>
+            <Input
+              id="birth"
+              type="date"
+              {...register("birth", { onChange: handleChangeDate })}
+            ></Input>
 
             <InputLabel htmlFor="height">Height</InputLabel>
-            <Input id="height" type="text"></Input>
+            <Input id="height" type="text" {...register("height")}></Input>
 
             <FormControl>
               <InputLabel htmlFor="language">Primary Language</InputLabel>
               <Select
                 labelId="language"
                 value={language}
-                // {...register("medicareAdvantage")}
+                {...register("language")}
                 onChange={handleChangeLanguage}
-                // input={<OutlinedInput label="Language" />}
                 displayEmpty
                 renderValue={
                   language !== "" ? undefined : () => <p>Select...</p>
@@ -427,7 +449,7 @@ function Test2HJ() {
             </FormControl>
 
             <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
-            <Input id="ehrId" type="text"></Input>
+            <Input id="ehrId" type="text" {...register("ehrId")} />
             <Button variant="contained">EHR ID Check</Button>
 
             <FormControl>
@@ -435,9 +457,8 @@ function Test2HJ() {
               <Select
                 labelId="physician"
                 value={physician}
-                // {...register("medicareAdvantage")}
+                {...register("physician")}
                 onChange={handleChangePhysician}
-                // input={<OutlinedInput label="physician" />}
                 displayEmpty
                 renderValue={
                   physician !== "" ? undefined : () => <p>Select...</p>
@@ -457,14 +478,18 @@ function Test2HJ() {
             <InputLabel htmlFor="patientMedication">
               Patient Medication
             </InputLabel>
-            <TextField id="patientMedication" variant="outlined" />
+            <TextField
+              id="patientMedication"
+              variant="outlined"
+              {...register("patientMedication")}
+            />
 
             <FormControl>
               <InputLabel htmlFor="conditions">Conditions</InputLabel>
               <Select
                 labelId="conditions"
                 value={conditions}
-                // {...register("medicareAdvantage")}
+                {...register("conditions")}
                 onChange={handleChangeConditions}
                 // input={<OutlinedInput label="physician" />}
                 displayEmpty
