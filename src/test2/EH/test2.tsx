@@ -10,6 +10,7 @@ import {
   Button,
   TextField,
   Checkbox,
+  FormHelperText,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { InsuranceSchemaType, insuranceSchema } from "./Schema/InsuranceSchema";
@@ -41,7 +42,7 @@ function Test2EH() {
 
   console.log(watch());
   return (
-    <>
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
       <section style={{ display: "flex" }}>
         <p>Insurance</p>
         <p>*required field</p>
@@ -49,8 +50,14 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Medicare Number*</InputLabel>
-          <Input required />
-          <Button variant='filled'>Medicare Check</Button>
+          <TextField
+            variant='standard'
+            {...register("requiredInput")}
+            helperText={errors.requiredInput?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+          />
+
+          <Button variant='contained'>Medicare Check</Button>
         </div>
 
         <div>
@@ -62,6 +69,7 @@ function Test2EH() {
                 value={value}
                 control={<Radio />}
                 label={value}
+                {...register("billableOption")}
               />
             ))}
           </RadioGroup>
@@ -69,7 +77,7 @@ function Test2EH() {
 
         <div>
           <InputLabel>Effective Start Date</InputLabel>
-          <Input type='date' />
+          <TextField type='date' />
         </div>
       </section>
       <section style={{ display: "flex" }}>
@@ -89,17 +97,17 @@ function Test2EH() {
 
         <div>
           <InputLabel>Medicare Advantage group number</InputLabel>
-          <Input />
+          <TextField variant='standard' disabled />
         </div>
 
         <div>
           <InputLabel>Medicare Advantage individual number</InputLabel>
-          <Input />
+          <TextField variant='standard' disabled />
         </div>
 
         <div>
           <InputLabel>Medi-CAL Number</InputLabel>
-          <Input />
+          <Input {...register("unrequiredInput")} />
           <Button>Medi-CAL Check</Button>
         </div>
       </section>
@@ -107,7 +115,7 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Facility*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("facility")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -117,11 +125,14 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.facility?.message}
+          </FormHelperText>
         </div>
 
         <div>
           <InputLabel>Room No*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("roomNo")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -131,13 +142,16 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.roomNo?.message}
+          </FormHelperText>
         </div>
       </section>
 
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Clinic Branch*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("clinicBranch")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -147,16 +161,29 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.clinicBranch?.message}
+          </FormHelperText>
         </div>
 
         <div>
           <InputLabel>Last Name*</InputLabel>
-          <Input />
+          <TextField
+            variant='standard'
+            helperText={errors.requiredInput?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("requiredInput")}
+          />
         </div>
 
         <div>
           <InputLabel>First Name*</InputLabel>
-          <Input />
+          <TextField
+            variant='standard'
+            helperText={errors.requiredInput?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("requiredInput")}
+          />
         </div>
 
         <div>
@@ -182,7 +209,7 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Gender*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("gender")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -192,16 +219,24 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.gender?.message}
+          </FormHelperText>
         </div>
 
         <div>
           <InputLabel>Date of Birth*</InputLabel>
-          <Input type='date' />
+          <Input type='date' {...register("date")} />
         </div>
 
         <div>
           <InputLabel>Height</InputLabel>
-          <Input />
+          <TextField
+            variant='standard'
+            helperText={errors.height?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("height")}
+          />
         </div>
 
         <div>
@@ -222,15 +257,20 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>EHR ID*</InputLabel>
-          <Input />
+          <TextField
+            variant='standard'
+            helperText={errors.requiredInput?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("requiredInput")}
+          />
           <Button>EHR ID Check</Button>
         </div>
 
         <div>
           <InputLabel>DX code(ICD-10s)*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("dXCode")}>
             <MenuItem disabled value='defaultValue'>
-              Select...
+              Search For ICD-10s
             </MenuItem>
             {DXCodeValue.map((value, index) => (
               <MenuItem key={index} value={value}>
@@ -238,11 +278,14 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.dXCode?.message}
+          </FormHelperText>
         </div>
 
         <div>
           <InputLabel>Primary Physician*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("primaryPhysician")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -252,6 +295,9 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.primaryPhysician?.message}
+          </FormHelperText>
         </div>
 
         <div>
@@ -277,7 +323,7 @@ function Test2EH() {
       <section style={{ display: "flex" }}>
         <div>
           <InputLabel>Phone Type*</InputLabel>
-          <Select defaultValue='defaultValue'>
+          <Select defaultValue='defaultValue' {...register("phoneType")}>
             <MenuItem disabled value='defaultValue'>
               Select...
             </MenuItem>
@@ -287,11 +333,19 @@ function Test2EH() {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText sx={{ color: "red" }}>
+            {errors.phoneType?.message}
+          </FormHelperText>
         </div>
 
         <div>
           <InputLabel>Phone Number*</InputLabel>
-          <Input />
+          <TextField
+            variant='standard'
+            helperText={errors.requiredInput?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("requiredInput")}
+          />
           <Button>Phone Check</Button>
         </div>
 
@@ -303,8 +357,10 @@ function Test2EH() {
               <>
                 <Checkbox />
                 Patient does not have email
+                {errors.emailAddress?.message}
               </>
             }
+            {...register("emailAddress")}
           />
           <Button>Email Check</Button>
         </div>
@@ -369,70 +425,8 @@ function Test2EH() {
         </div>
       </section>
 
-      <Button>SAVE</Button>
-      {/* <form
-        onSubmit={handleSubmit((data: InsuranceSchemaType) =>
-          console.log(data)
-        )}
-      >
-        <section>
-          <Input
-            {...register("phoneNumber")}
-            onChange={(e) =>
-              (e.target.value = e.target.value.replace(/\D/g, ""))
-            }
-          />
-          <button>중복검사</button>
-
-          {errors.phoneNumber && (
-            <p style={{ color: "red" }}>{errors.phoneNumber.message}</p>
-          )}
-        </section>
-
-        <section>
-          <RadioGroup row>
-            {radioValue.map((value, index) => (
-              <FormControlLabel
-                key={index}
-                value={value}
-                control={<Radio />}
-                label={value}
-                {...register("selectOption")}
-              />
-            ))}
-          </RadioGroup>
-          {errors.selectOption && (
-            <p style={{ color: "red " }}>{errors.selectOption.message}</p>
-          )}
-        </section>
-
-        <section>
-          <Input type='date' {...register("date")} />
-        </section>
-
-        <section>
-        
-          {errors.selectBox && (
-            <p style={{ color: "red" }}>{errors.selectBox.message}</p>
-          )}
-        </section>
-
-        <section>
-          <Input
-            {...register("name")}
-            onChange={(e) => {
-              e.target.value = e.target.value.replace(/[^A-Za-z]/g, "");
-            }}
-          />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-        </section>
-
-        <section>
-          <button type='reset'>리셋</button>
-          <button type='submit'>제출</button>
-        </section>
-      </form> */}
-    </>
+      <Button type='submit'>SAVE</Button>
+    </form>
   );
 }
 
