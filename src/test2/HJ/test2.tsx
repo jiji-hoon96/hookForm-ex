@@ -18,6 +18,9 @@ import FormLabel from "@mui/material/FormLabel";
 function Test2HJ() {
   const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
   const [medicareAdvantage, setMedicareAdvantage] = useState<string>("");
+  const [checkedLTC, setCheckedLTC] = useState<boolean>(false);
+  const [facility, setFacility] = useState<string>("");
+  const [selectRoomNumber, setSelectRoomNumber] = useState<string>("");
   const [clinicBranch, setClinicBranch] = useState<string>("");
   const [suffix, setSuffix] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -28,7 +31,8 @@ function Test2HJ() {
   const [relationship, setRelationship] = useState<string>("");
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
-
+  const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
+  const selectRoomNumberOption = ["Enter the Room No", "000", "123", "abc"];
   const clinicBranchOption = [
     "HicareNet",
     "hicarenetBrance",
@@ -74,6 +78,28 @@ function Test2HJ() {
 
   const handleChangeBill = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBillableValue(event.target.value);
+  };
+
+  const handleChangeLTC = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { checked },
+    } = event;
+    setCheckedLTC(checked);
+  };
+  const handleChangeFacility = (event: SelectChangeEvent<typeof facility>) => {
+    const {
+      target: { value },
+    } = event;
+    setFacility(value);
+  };
+
+  const handleChangeSelectRoomNumber = (
+    event: SelectChangeEvent<typeof selectRoomNumber>
+  ) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectRoomNumber(value);
   };
 
   const handleChangeClinicBranch = (
@@ -204,10 +230,70 @@ function Test2HJ() {
       </section>
 
       <section>
-        <p>Patient profile</p>{" "}
+        <p>Patient profile</p>
+
         <FormGroup>
-          <FormControlLabel control={<Checkbox />} label="LTC" />
+          <FormControlLabel
+            control={<Checkbox onChange={handleChangeLTC} />}
+            label="LTC"
+          />
         </FormGroup>
+        {checkedLTC ? (
+          <>
+            <FormControl>
+              <InputLabel htmlFor="facility">Facility *</InputLabel>
+              <Select
+                labelId="facility"
+                value={facility}
+                // {...register("facility")}
+                onChange={handleChangeFacility}
+                displayEmpty
+                renderValue={
+                  facility !== "" ? undefined : () => <p>Select...</p>
+                }
+              >
+                <MenuItem value="" disabled style={{ display: "none" }}>
+                  <p>select...</p>
+                </MenuItem>
+                {facilityOption.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl>
+              <InputLabel htmlFor="selectRoomNumber">Room No *</InputLabel>
+              <Select
+                labelId="selectRoomNumber"
+                value={selectRoomNumber}
+                // {...register("selectRoomNumber")}
+                onChange={handleChangeSelectRoomNumber}
+                displayEmpty
+                renderValue={
+                  selectRoomNumber !== "" ? undefined : () => <p>Select...</p>
+                }
+              >
+                <MenuItem value="" disabled style={{ display: "none" }}>
+                  <p>select...</p>
+                </MenuItem>
+                {selectRoomNumberOption.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {selectRoomNumber == "Enter the Room No" ? (
+              <>
+                <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
+                <Input id="roomNumber" type="text" />
+              </>
+            ) : null}
+          </>
+        ) : null}
+
         <FormControl>
           <InputLabel htmlFor="clinicBranch">Clinic branch</InputLabel>
           <Select
