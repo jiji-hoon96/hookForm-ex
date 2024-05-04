@@ -5,42 +5,55 @@ const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
 const onlyAlphabetRegex = /^[a-zA-Z]+$/;
 
 export const patientFormSchema = z.object({
-  phone: z
-    .string()
-    .regex(phoneRegex, "핸드폰 번호 형식이 아닙니다.")
-    .min(9, {
-      message: "0으로 시작하는 최소 9자리 이상의 숫자를 입력해주세요.",
-    })
-    .max(11, { message: "11자리 이하로 입력해주세요." }),
-
-  billableOption: z.string(),
-  medicareAdvantage: z.string().min(2),
-  facility: z.string({ message: "This field is required." }).min(1),
-  selectRoomNumber: z.string({ message: "This field is required." }).min(1),
-  clinicBranch: z.string().min(1, { message: "This field is required." }),
+  facility: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  selectRoomNumber: z.string(),
+  clinicBranch: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
   lastName: z
-    .string({ message: "This field is required." })
-    .min(1)
+    .string({
+      required_error: "Name is required",
+      invalid_type_error: "Name must be a string",
+    })
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
   firstName: z
-    .string({ message: "This field is required." })
-    .min(1)
+    .string({
+      required_error: "Name is required",
+      invalid_type_error: "Name must be a string",
+    })
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
   middleName: z
     .string()
     .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." })
-    .min(1)
     .optional(),
   suffix: z.string().optional(),
-  gender: z.string({ message: "This field is required." }),
-  birth: z.string({ message: "This field is required." }),
-  height: z.number({ message: "height must be a number." }).optional(),
+  gender: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  birth: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  height: z.string().optional(),
   language: z.string().optional(),
   primaryLanguage: z.string().optional(),
-  ehrId: z.string({ message: "This field is required." }).min(1),
-  physician: z.string({ message: "This field is required." }).min(1),
-  dxCode: z.string({ message: "This field is required." }).min(1),
-  primaryPhysician: z.string({ message: "This field is required." }).min(1),
+  ehrId: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  dxCode: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
+  primaryPhysician: z.string({
+    required_error: "Name is required",
+    invalid_type_error: "Name must be a string",
+  }),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
 });
