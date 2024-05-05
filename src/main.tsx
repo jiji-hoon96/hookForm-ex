@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import Test2EH from "./test2/EH/test2";
 import Test2HJ from "./test2/HJ/test2";
+import Test2JH from "./test2/JH/test2";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <Link to="patientCreate-EH">은한씩 작업</Link>
           <Link to="patientCreate-HJ">현지씨 작업</Link>
+          <Link to="patientCreate-JH">이지훈 작업</Link>
         </div>
       </>
     ),
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "patientCreate-HJ",
     element: <Test2HJ />,
+  },
+  {
+    path: "patientCreate-JH",
+    element: <Test2JH />,
   },
 ]);
 
