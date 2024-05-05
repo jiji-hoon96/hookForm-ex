@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  InputContainer,
+  MainContainer,
+  SectionContainer,
+  RedText,
+  BlueText,
+} from "./test2.styled";
+
 import {
   Input,
   MenuItem,
@@ -12,15 +21,10 @@ import {
   FormHelperText,
   FormControlLabel,
   Radio,
+  FormControl,
 } from "@mui/material";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import {
-  InputContainer,
-  MainContainer,
-  SectionContainer,
-  RedText,
-  BlueText,
-} from "./test2.styled";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 interface InputProps {
   medicareNumber: string;
@@ -40,6 +44,7 @@ const MedicareAdvantageData = [
 
 function Test2JH() {
   const [patientData, setPatientData] = useState();
+  const [medicareAdvantage, setMedicareAdvantage] = useState("");
   const {
     register,
     watch,
@@ -51,6 +56,10 @@ function Test2JH() {
 
   const onSubmit: SubmitHandler<InputProps | FieldValues> = (data) =>
     setPatientData(data);
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setMedicareAdvantage(event.target.value);
+  };
 
   console.log(watch());
   return (
@@ -71,7 +80,7 @@ function Test2JH() {
 
           <InputContainer>
             <InputLabel>Billable Option*</InputLabel>
-            <RadioGroup row>
+            <RadioGroup row defaultValue="Medicare PPO">
               <FormControlLabel
                 value="Medicare PPO"
                 control={<Radio />}
@@ -94,18 +103,21 @@ function Test2JH() {
         </SectionContainer>
         <SectionContainer>
           <InputContainer>
-            <InputLabel>Medicare Advantage</InputLabel>
-            <Select
-              value={""}
-              label="medicareAdvantage"
-              {...register("medicareAdvantage")}
-            >
-              {MedicareAdvantageData.map((value, index) => (
-                <MenuItem key={index} value={value}>
-                  {value}
-                </MenuItem>
-              ))}
-            </Select>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+              <InputLabel>Medicare Advantage</InputLabel>
+              <Select
+                value={medicareAdvantage}
+                label="select..."
+                {...register("medicareAdvantage")}
+                onChange={handleChange}
+              >
+                {MedicareAdvantageData.map((value, index) => (
+                  <MenuItem key={index} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </InputContainer>
 
           <InputContainer>
