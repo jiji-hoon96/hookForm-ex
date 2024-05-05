@@ -45,7 +45,11 @@ function Test2EH() {
   console.log(watch());
   return (
     <>
-      <form onSubmit={handleSubmit((data) => console.log("save:", data))}>
+      <form
+        onSubmit={handleSubmit((data: InsuranceSchemaType) =>
+          alert(JSON.stringify(data))
+        )}
+      >
         <section style={{ display: "flex" }}>
           <p>Insurance</p>
           <p>*required field</p>
@@ -69,7 +73,7 @@ function Test2EH() {
 
           <div>
             <InputLabel>Billable Option*</InputLabel>
-            <RadioGroup row>
+            <RadioGroup defaultValue={"Medicare PPO"} row>
               {BillableOptionValue.map((value, index) => (
                 <FormControlLabel
                   key={index}
@@ -91,7 +95,10 @@ function Test2EH() {
         <section style={{ display: "flex" }}>
           <div>
             <InputLabel>Medicare Advantage</InputLabel>
-            <Select defaultValue='defaultValue'>
+            <Select
+              defaultValue='defaultValue'
+              {...register("medicareAdvantage")}
+            >
               <MenuItem disabled value='defaultValue'>
                 Select...
               </MenuItem>
