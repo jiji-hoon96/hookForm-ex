@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PatientFormSchema, patientFormSchema } from "./test2Schema";
-import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  FieldPath,
+  Control,
+  Controller,
+} from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
@@ -12,6 +18,7 @@ import Button from "@mui/material/Button";
 import JustEnInput from "./JustEnInput";
 import CustomSelect from "./CustomSelect";
 import JustNumInput from "./JustNumInput";
+import { FormControl, FormHelperText } from "@mui/material";
 
 function Test2HJ() {
   const {
@@ -172,16 +179,17 @@ function Test2HJ() {
           <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
 
           <div>
-            <InputLabel htmlFor="lastName" />
-            Last Name *
-            <JustEnInput control={control} name="lastName" id="lastName" />
-            <p style={{ color: "#ff0000" }}>{errors.lastName?.message}</p>
-            <InputLabel htmlFor="firstName" />
-            First Name *
+            <FormControl>
+              <label htmlFor="lastName">Last Name *</label>
+              <JustEnInput control={control} name="lastName" id="lastName" />
+              <FormHelperText>daf</FormHelperText>
+              <p style={{ color: "#ff0000" }}>{errors.lastName?.message}</p>
+            </FormControl>
+
+            <InputLabel htmlFor="firstName">First Name *</InputLabel>
             <JustEnInput id="firstName" name="firstName" control={control} />
             <p style={{ color: "#ff0000" }}>{errors.firstName?.message}</p>
-            <InputLabel htmlFor="middleName" />
-            Middle Name
+            <InputLabel htmlFor="middleName">Middle Name</InputLabel>
             <JustEnInput id="middleName" name="middleName" control={control} />
             <CustomSelect
               menuItems={suffixOption}
@@ -196,9 +204,26 @@ function Test2HJ() {
               control={control}
             />
             <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
-            <InputLabel htmlFor="birth">Date Of Birth *</InputLabel>
-            <Input id="birth" type="date" {...register("birth")} />
+
+            <InputLabel htmlFor="birth">Date of Birth *</InputLabel>
+            <Controller
+              name="birth"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="birth"
+                  type="date"
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                />
+              )}
+            />
             <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
+
+            <InputLabel htmlFor="height"> Height</InputLabel>
             <JustNumInput id="height" name="height" control={control} />
             <CustomSelect
               menuItems={languageOption}
