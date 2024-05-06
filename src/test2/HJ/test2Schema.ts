@@ -4,16 +4,35 @@ import { z } from "zod";
 const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
 const onlyAlphabetRegex = /^[a-zA-Z]+$/;
 
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === z.ZodIssueCode.invalid_string) {
+    return { message: "This field is required." };
+  }
+  if (issue.code === z.ZodIssueCode.too_small) {
+    return { message: "This field is required." };
+  }
+  return { message: ctx.defaultError };
+};
+
+z.setErrorMap(customErrorMap);
+z.string({ errorMap: customErrorMap });
+
 export const patientFormSchema = z.object({
-  facility: z.string({
-    required_error: "This field is required.",
-  }),
-  selectRoomNumber: z.string({
-    required_error: "This field is required.",
-  }),
-  clinicBranch: z.string({
-    required_error: "This field is required.",
-  }),
+  facility: z
+    .string({
+      required_error: "This field is required.",
+    })
+    .min(2),
+  selectRoomNumber: z
+    .string({
+      required_error: "This field is required.",
+    })
+    .min(2),
+  clinicBranch: z
+    .string({
+      required_error: "This field is required.",
+    })
+    .min(2),
   lastName: z
     .string({
       required_error: "This field is required.",
@@ -28,24 +47,30 @@ export const patientFormSchema = z.object({
     .regex(onlyAlphabetRegex),
   middleName: z.string().regex(onlyAlphabetRegex).optional(),
   suffix: z.string().optional(),
-  gender: z.string({
-    required_error: "This field is required",
-  }),
-  birth: z.string({
-    required_error: "This field is required",
-  }),
+  gender: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(2),
+  birth: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(2),
   height: z.string().optional(),
   language: z.string().optional(),
   primaryLanguage: z.string().optional(),
   ehrId: z.string({
     required_error: "This field is required",
   }),
-  dxCode: z.string({
-    required_error: "This field is required",
-  }),
-  primaryPhysician: z.string({
-    required_error: "This field is required",
-  }),
+  // dxCode: z.string({
+  //   required_error: "This field is required",
+  // }),
+  primaryPhysician: z
+    .string({
+      required_error: "This field is required",
+    })
+    .min(2),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
 });

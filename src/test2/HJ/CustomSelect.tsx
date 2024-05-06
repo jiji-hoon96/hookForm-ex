@@ -12,25 +12,16 @@ interface Props {
   label: string;
 }
 
-export default function CustomSelect({
-  menuItems,
-  name,
-  label,
-  control,
-}: Props) {
+const CustomSelect = ({ menuItems, name, label, control }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
+  const handleToggle = () => {
+    setOpen((prev) => !prev);
   };
 
   return (
     <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-      <label id={label} onClick={handleOpen}>
+      <label id={label} onClick={handleToggle}>
         {label}
       </label>
       <Controller
@@ -42,8 +33,8 @@ export default function CustomSelect({
             displayEmpty
             labelId={label}
             open={open}
-            onOpen={handleOpen}
-            onClose={handleClose}
+            onOpen={handleToggle}
+            onClose={handleToggle}
             {...field}
           >
             <MenuItem value="" disabled style={{ display: "none" }}>
@@ -59,4 +50,6 @@ export default function CustomSelect({
       />
     </FormControl>
   );
-}
+};
+
+export default CustomSelect;
