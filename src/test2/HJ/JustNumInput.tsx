@@ -8,7 +8,7 @@ interface Props {
   control: Control<PatientFormSchema>;
 }
 
-const JustEnInput = ({ id, name, control }: Props) => {
+const JustNumInput = ({ id, name, control }: Props) => {
   return (
     <Controller
       name={name}
@@ -19,7 +19,7 @@ const JustEnInput = ({ id, name, control }: Props) => {
           {...field}
           id={id}
           onChange={(e) => {
-            field.onChange(e.target.value.replace(/[^A-Za-z]/gi, ""));
+            field.onChange(e.target.value.replace(/[^\d]/g, ""));
           }}
         />
       )}
@@ -27,4 +27,4 @@ const JustEnInput = ({ id, name, control }: Props) => {
   );
 };
 
-export default JustEnInput;
+export default JustNumInput;
