@@ -6,53 +6,45 @@ const onlyAlphabetRegex = /^[a-zA-Z]+$/;
 
 export const patientFormSchema = z.object({
   facility: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required.",
   }),
-  selectRoomNumber: z.string(),
+  selectRoomNumber: z.string({
+    required_error: "This field is required.",
+  }),
   clinicBranch: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required.",
   }),
   lastName: z
     .string({
-      required_error: "Name is required",
-      invalid_type_error: "Name must be a string",
+      required_error: "This field is required.",
+      invalid_type_error: "Last Name must be a string",
     })
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
+    .regex(onlyAlphabetRegex),
   firstName: z
     .string({
-      required_error: "Name is required",
-      invalid_type_error: "Name must be a string",
+      required_error: "This field is required",
+      invalid_type_error: "First Name must be a string",
     })
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
-  middleName: z
-    .string()
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." })
-    .optional(),
+    .regex(onlyAlphabetRegex),
+  middleName: z.string().regex(onlyAlphabetRegex).optional(),
   suffix: z.string().optional(),
   gender: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required",
   }),
   birth: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required",
   }),
   height: z.string().optional(),
   language: z.string().optional(),
   primaryLanguage: z.string().optional(),
   ehrId: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required",
   }),
   dxCode: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required",
   }),
   primaryPhysician: z.string({
-    required_error: "Name is required",
-    invalid_type_error: "Name must be a string",
+    required_error: "This field is required",
   }),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
