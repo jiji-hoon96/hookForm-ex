@@ -5,15 +5,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import JustEnInput from "./JustEnInput";
 import CustomSelect from "./CustomSelect";
+import JustNumInput from "./JustNumInput";
 
 function Test2HJ() {
   const {
@@ -149,7 +147,7 @@ function Test2HJ() {
           <CustomSelect
             menuItems={facilityOption}
             name="facility"
-            label="Facility"
+            label="Facility *"
             control={control}
           />
           <p style={{ color: "#ff0000" }}>{errors.facility?.message}</p>
@@ -168,7 +166,7 @@ function Test2HJ() {
           <CustomSelect
             menuItems={clinicBranchOption}
             name="clinicBranch"
-            label="Clinic Branch"
+            label="Clinic Branch *"
             control={control}
           />
           <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
@@ -201,8 +199,7 @@ function Test2HJ() {
             <InputLabel htmlFor="birth">Date Of Birth *</InputLabel>
             <Input id="birth" type="date" {...register("birth")} />
             <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
-            <InputLabel htmlFor="height">Height</InputLabel>
-            <Input id="height" type="text" {...register("height")} />
+            <JustNumInput id="height" name="height" control={control} />
             <CustomSelect
               menuItems={languageOption}
               name="language"
