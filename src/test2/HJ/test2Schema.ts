@@ -18,45 +18,15 @@ z.setErrorMap(customErrorMap);
 z.string({ errorMap: customErrorMap });
 
 export const patientFormSchema = z.object({
-  facility: z
-    .string({
-      required_error: "This field is required.",
-    })
-    .min(2),
-  selectRoomNumber: z
-    .string({
-      required_error: "This field is required.",
-    })
-    .min(2),
-  clinicBranch: z
-    .string({
-      required_error: "This field is required.",
-    })
-    .min(2),
-  lastName: z
-    .string({
-      required_error: "This field is required.",
-      invalid_type_error: "Last Name must be a string",
-    })
-    .regex(onlyAlphabetRegex),
-  firstName: z
-    .string({
-      required_error: "This field is required",
-      invalid_type_error: "First Name must be a string",
-    })
-    .regex(onlyAlphabetRegex),
-  middleName: z.string().regex(onlyAlphabetRegex).optional(),
+  facility: z.string().min(1),
+  selectRoomNumber: z.string().min(1),
+  clinicBranch: z.string().min(1),
+  lastName: z.string().regex(onlyAlphabetRegex),
+  firstName: z.string().regex(onlyAlphabetRegex),
+  middleName: z.string().optional(),
   suffix: z.string().optional(),
-  gender: z
-    .string({
-      required_error: "This field is required",
-    })
-    .min(2),
-  birth: z
-    .string({
-      required_error: "This field is required",
-    })
-    .min(2),
+  gender: z.string().min(1),
+  birth: z.string().date(),
   height: z.string().optional(),
   language: z.string().optional(),
   primaryLanguage: z.string().optional(),
@@ -66,11 +36,7 @@ export const patientFormSchema = z.object({
   // dxCode: z.string({
   //   required_error: "This field is required",
   // }),
-  primaryPhysician: z
-    .string({
-      required_error: "This field is required",
-    })
-    .min(2),
+  primaryPhysician: z.string().min(1),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
 });
