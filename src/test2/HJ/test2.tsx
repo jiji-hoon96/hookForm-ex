@@ -5,40 +5,25 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormLabel from "@mui/material/FormLabel";
+import JustEnInput from "./JustEnInput";
+import CustomSelect from "./CustomSelect";
 
 function Test2HJ() {
   const {
     register,
     handleSubmit,
     watch,
+    getValues,
+    control,
     formState: { errors },
   } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
-  console.log(watch("gender"));
-
-  const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
-  const [medicareAdvantage, setMedicareAdvantage] = useState<string>("");
-  const [checkedLTC, setCheckedLTC] = useState<boolean>(false);
-  const [facility, setFacility] = useState<string>("");
-  const [selectRoomNumber, setSelectRoomNumber] = useState<string>("");
-  const [clinicBranch, setClinicBranch] = useState<string>("");
-  const [suffix, setSuffix] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
-  const [language, setLanguage] = useState<string>("");
-  const [physician, setPhysician] = useState<string>("");
-  const [conditions, setConditions] = useState<string>("");
-  const [phoneType, setPhoneType] = useState<string>("");
-  const [relationship, setRelationship] = useState<string>("");
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
@@ -71,120 +56,14 @@ function Test2HJ() {
     "Other relationship",
   ];
 
-  const handleChangeMedicareOption = (
-    event: SelectChangeEvent<typeof medicareAdvantage>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setMedicareAdvantage(value);
-  };
-
-  const handleChangeBill = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBillableValue(event.target.value);
-  };
-
-  const handleChangeLTC = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { checked },
-    } = event;
-    setCheckedLTC(checked);
-  };
-  const handleChangeFacility = (event: SelectChangeEvent<typeof facility>) => {
-    const {
-      target: { value },
-    } = event;
-    setFacility(value);
-    setSelectRoomNumber("");
-  };
-
-  const handleChangeSelectRoomNumber = (
-    event: SelectChangeEvent<typeof selectRoomNumber>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectRoomNumber(value);
-  };
-
-  const handleChangeClinicBranch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setClinicBranch(value);
-  };
-
-  const handleChangeSuffix = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setSuffix(value);
-  };
-
-  const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setGender(value);
-  };
-
-  const handleChangeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setLanguage(value);
-  };
-
-  const handleChangePhysician = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setPhysician(value);
-  };
-
-  const handleChangeConditions = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setConditions(value);
-  };
-
-  const handleChangePhoneType = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setPhoneType(value);
-  };
-
-  const handleChangeRelationship = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setRelationship(value);
-  };
-  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const day = event.target.value.toString().split("-");
-    const formatDay = `${day[1]}/${day[2]}/${day[0]}`;
-    console.log(formatDay);
-  };
-
-  const onSubmit: SubmitHandler<PatientFormSchema> = (data) =>
+  const onSubmit: SubmitHandler<PatientFormSchema> = (data) => {
     console.log(data);
+  };
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <section>
+        {/* <section>
           <div
             style={{
               display: "flex",
@@ -207,15 +86,16 @@ function Test2HJ() {
                   value="Billable PPO"
                   control={<Radio />}
                   label="Billable PPO"
-                  // {...register("billableOption")}
+                  {...register("billableOption")}
                 />
                 <FormControlLabel
                   value="Medicare HMO"
                   control={<Radio />}
                   label="Medicare HMO"
-                  // {...register("billableOption")}
+                  {...register("billableOption")}
                 />
               </RadioGroup>
+              <input type="radio" {...register("billableOption")} />
             </FormControl>
 
             <InputLabel htmlFor="startDate">Effective Start Date</InputLabel>
@@ -224,7 +104,7 @@ function Test2HJ() {
             <FormControl>
               <Select
                 value={medicareAdvantage}
-                // {...register("medicareAdvantage")}
+                {...register("medicareAdvantage")}
                 onChange={handleChangeMedicareOption}
                 input={<OutlinedInput />}
               >
@@ -249,7 +129,7 @@ function Test2HJ() {
             <Input id="medicalNumber" type="text" />
             <Button variant="contained">Medi-CAL Check</Button>
           </div>
-        </section>
+        </section> */}
 
         <section>
           <div
@@ -260,129 +140,67 @@ function Test2HJ() {
           >
             <p>Patient profile</p>
             <FormGroup>
-              <FormControlLabel
-                control={<Checkbox onChange={handleChangeLTC} />}
-                label="LTC"
-              />
+              <FormControlLabel control={<Checkbox />} label="LTC" />
             </FormGroup>
           </div>
-          {checkedLTC ? (
-            <>
-              <FormControl>
-                <InputLabel htmlFor="facility">Facility *</InputLabel>
-                <Select
-                  labelId="facility"
-                  value={facility}
-                  {...register("facility")}
-                  onChange={handleChangeFacility}
-                  displayEmpty
-                  renderValue={
-                    facility !== "" ? undefined : () => <p>Select...</p>
-                  }
-                >
-                  <MenuItem value="" disabled style={{ display: "none" }}>
-                    <p>select...</p>
-                  </MenuItem>
-                  {facilityOption.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
-              <FormControl>
-                <InputLabel htmlFor="selectRoomNumber">Room No *</InputLabel>
-                <Select
-                  labelId="selectRoomNumber"
-                  value={selectRoomNumber}
-                  {...register("selectRoomNumber")}
-                  onChange={handleChangeSelectRoomNumber}
-                  displayEmpty
-                  renderValue={
-                    selectRoomNumber !== "" ? undefined : () => <p>Select...</p>
-                  }
-                >
-                  <MenuItem value="" disabled style={{ display: "none" }}>
-                    <p>select...</p>
-                  </MenuItem>
-                  {selectRoomNumberOption.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {selectRoomNumber == "Enter the Room No" ? (
-                <>
-                  <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
-                  <Input id="roomNumber" type="text" />
-                </>
-              ) : null}
-            </>
-          ) : null}
+          <CustomSelect
+            menuItems={facilityOption}
+            name="facility"
+            label="facility"
+            control={control}
+          />
 
           <FormControl>
-            <InputLabel htmlFor="clinicBranch">Clinic branch</InputLabel>
+            <InputLabel htmlFor="selectRoomNumber">Room No *</InputLabel>
             <Select
-              labelId="clinicBranch"
-              value={clinicBranch}
-              {...register("clinicBranch")}
-              onChange={handleChangeClinicBranch}
+              labelId="selectRoomNumber"
+              {...register("selectRoomNumber")}
               displayEmpty
-              renderValue={
-                clinicBranch !== "" ? undefined : () => <p>Select...</p>
-              }
             >
-              <MenuItem value="" disabled style={{ display: "none" }}>
-                <p>placeholder</p>
+              <MenuItem disabled style={{ display: "none" }}>
+                <p>select...</p>
               </MenuItem>
-              {clinicBranchOption.map((option) => (
+              {selectRoomNumberOption.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <div>
-            <InputLabel htmlFor="lastName">
-              Last Name *
-              <TextField
-                variant="standard"
-                type="text"
-                id="lastName"
-                {...register("lastName")}
-              />
-            </InputLabel>
-            <InputLabel htmlFor="firstName">
-              First Name *
-              <TextField
-                variant="standard"
-                type="text"
-                id="firstName"
-                {...register("firstName")}
-              />
-            </InputLabel>
-            <InputLabel htmlFor="middleName">
-              Middle Name
-              <TextField
-                variant="standard"
-                type="text"
-                id="middleName"
-                {...register("middleName")}
-              />
-            </InputLabel>
 
+          <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
+          <Input id="roomNumber" type="text" />
+
+          <InputLabel htmlFor="clinicBranch">Clinic branch</InputLabel>
+          <Select
+            labelId="clinicBranch"
+            {...register("clinicBranch")}
+            displayEmpty
+          >
+            <MenuItem value="" disabled style={{ display: "none" }}>
+              <p>placeholder</p>
+            </MenuItem>
+            {clinicBranchOption.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <div>
+            <InputLabel htmlFor="lastName" />
+            Last Name *
+            <JustEnInput control={control} name="lastName" id="lastName" />
+            <InputLabel htmlFor="firstName" />
+            First Name *
+            <JustEnInput id="firstName" name="firstName" control={control} />
+            <InputLabel htmlFor="middleName" />
+            Middle Name
+            <JustEnInput id="middleName" name="middleName" control={control} />
             <FormControl>
               <InputLabel htmlFor="suffix">Suffix</InputLabel>
-              <Select
-                labelId="suffix"
-                value={suffix}
-                {...register("suffix")}
-                onChange={handleChangeSuffix}
-                displayEmpty
-                renderValue={suffix !== "" ? undefined : () => <p>Select...</p>}
-              >
+              <Select labelId="suffix" {...register("suffix")} displayEmpty>
                 <MenuItem value="" disabled style={{ display: "none" }}>
                   <p>placeholder</p>
                 </MenuItem>
@@ -393,17 +211,9 @@ function Test2HJ() {
                 ))}
               </Select>
             </FormControl>
-
             <FormControl>
               <InputLabel htmlFor="gender">Gender *</InputLabel>
-              <Select
-                labelId="gender"
-                value={gender}
-                {...register("gender")}
-                onChange={handleChangeGender}
-                displayEmpty
-                renderValue={gender !== "" ? undefined : () => <p>Select...</p>}
-              >
+              <Select labelId="gender" {...register("gender")} displayEmpty>
                 <MenuItem value="" disabled style={{ display: "none" }}>
                   <p>Select...</p>
                 </MenuItem>
@@ -414,29 +224,13 @@ function Test2HJ() {
                 ))}
               </Select>
             </FormControl>
-
             <InputLabel htmlFor="birth">Date Of Birth</InputLabel>
-            <Input
-              id="birth"
-              type="date"
-              {...register("birth", { onChange: handleChangeDate })}
-            ></Input>
-
+            <Input id="birth" type="date" {...register("birth")} />
             <InputLabel htmlFor="height">Height</InputLabel>
-            <Input id="height" type="text" {...register("height")}></Input>
-
+            <Input id="height" type="text" {...register("height")} />
             <FormControl>
               <InputLabel htmlFor="language">Primary Language</InputLabel>
-              <Select
-                labelId="language"
-                value={language}
-                {...register("language")}
-                onChange={handleChangeLanguage}
-                displayEmpty
-                renderValue={
-                  language !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
+              <Select labelId="language" {...register("language")} displayEmpty>
                 <MenuItem value="" disabled style={{ display: "none" }}>
                   <p>Select...</p>
                 </MenuItem>
@@ -447,22 +241,17 @@ function Test2HJ() {
                 ))}
               </Select>
             </FormControl>
-
             <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
             <Input id="ehrId" type="text" {...register("ehrId")} />
             <Button variant="contained">EHR ID Check</Button>
-
             <FormControl>
-              <InputLabel htmlFor="physician">Primary Physician *</InputLabel>
+              <InputLabel htmlFor="primaryPhysician">
+                Primary Physician *
+              </InputLabel>
               <Select
-                labelId="physician"
-                value={physician}
-                {...register("physician")}
-                onChange={handleChangePhysician}
+                labelId="primaryPhysician"
+                {...register("primaryPhysician")}
                 displayEmpty
-                renderValue={
-                  physician !== "" ? undefined : () => <p>Select...</p>
-                }
               >
                 <MenuItem value="" disabled style={{ display: "none" }}>
                   <p>Select...</p>
@@ -474,7 +263,6 @@ function Test2HJ() {
                 ))}
               </Select>
             </FormControl>
-
             <InputLabel htmlFor="patientMedication">
               Patient Medication
             </InputLabel>
@@ -483,19 +271,12 @@ function Test2HJ() {
               variant="outlined"
               {...register("patientMedication")}
             />
-
             <FormControl>
               <InputLabel htmlFor="conditions">Conditions</InputLabel>
               <Select
                 labelId="conditions"
-                value={conditions}
                 {...register("conditions")}
-                onChange={handleChangeConditions}
-                // input={<OutlinedInput label="physician" />}
                 displayEmpty
-                renderValue={
-                  conditions !== "" ? undefined : () => <p>Select...</p>
-                }
               >
                 <MenuItem value="" disabled style={{ display: "none" }}>
                   <p>Select...</p>
@@ -510,7 +291,7 @@ function Test2HJ() {
           </div>
         </section>
 
-        <section>
+        {/* <section>
           <div
             style={{
               display: "flex",
@@ -602,10 +383,11 @@ function Test2HJ() {
             <InputLabel htmlFor="zip">ZIP / Postal</InputLabel>
             <Input id="zip" />
           </div>
-          <Button variant="contained" type="submit">
-            Save
-          </Button>
-        </section>
+          
+        </section> */}
+        <Button variant="contained" type="submit">
+          Save
+        </Button>
       </form>
     </>
   );
