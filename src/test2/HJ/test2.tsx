@@ -60,6 +60,8 @@ function Test2HJ() {
     console.log(data);
   };
 
+  console.log(errors);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -147,122 +149,79 @@ function Test2HJ() {
           <CustomSelect
             menuItems={facilityOption}
             name="facility"
-            label="facility"
+            label="Facility"
             control={control}
           />
+          <p style={{ color: "#ff0000" }}>{errors.facility?.message}</p>
 
-          <FormControl>
-            <InputLabel htmlFor="selectRoomNumber">Room No *</InputLabel>
-            <Select
-              labelId="selectRoomNumber"
-              {...register("selectRoomNumber")}
-              displayEmpty
-            >
-              <MenuItem disabled style={{ display: "none" }}>
-                <p>select...</p>
-              </MenuItem>
-              {selectRoomNumberOption.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <CustomSelect
+            menuItems={selectRoomNumberOption}
+            name="selectRoomNumber"
+            label="Room No *"
+            control={control}
+          />
+          <p style={{ color: "#ff0000" }}>{errors.selectRoomNumber?.message}</p>
 
           <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
           <Input id="roomNumber" type="text" />
 
-          <InputLabel htmlFor="clinicBranch">Clinic branch</InputLabel>
-          <Select
-            labelId="clinicBranch"
-            {...register("clinicBranch")}
-            displayEmpty
-          >
-            <MenuItem value="" disabled style={{ display: "none" }}>
-              <p>placeholder</p>
-            </MenuItem>
-            {clinicBranchOption.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
-          </Select>
+          <CustomSelect
+            menuItems={clinicBranchOption}
+            name="clinicBranch"
+            label="Clinic Branch"
+            control={control}
+          />
+          <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
 
           <div>
             <InputLabel htmlFor="lastName" />
             Last Name *
             <JustEnInput control={control} name="lastName" id="lastName" />
+            <p style={{ color: "#ff0000" }}>{errors.lastName?.message}</p>
             <InputLabel htmlFor="firstName" />
             First Name *
             <JustEnInput id="firstName" name="firstName" control={control} />
+            <p style={{ color: "#ff0000" }}>{errors.firstName?.message}</p>
             <InputLabel htmlFor="middleName" />
             Middle Name
             <JustEnInput id="middleName" name="middleName" control={control} />
-            <FormControl>
-              <InputLabel htmlFor="suffix">Suffix</InputLabel>
-              <Select labelId="suffix" {...register("suffix")} displayEmpty>
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>placeholder</p>
-                </MenuItem>
-                {suffixOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="gender">Gender *</InputLabel>
-              <Select labelId="gender" {...register("gender")} displayEmpty>
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {genderOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <InputLabel htmlFor="birth">Date Of Birth</InputLabel>
+            <CustomSelect
+              menuItems={suffixOption}
+              name="suffix"
+              label="Suffix"
+              control={control}
+            />
+            <CustomSelect
+              menuItems={genderOption}
+              name="gender"
+              label="Gender *"
+              control={control}
+            />
+            <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
+            <InputLabel htmlFor="birth">Date Of Birth *</InputLabel>
             <Input id="birth" type="date" {...register("birth")} />
+            <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
             <InputLabel htmlFor="height">Height</InputLabel>
             <Input id="height" type="text" {...register("height")} />
-            <FormControl>
-              <InputLabel htmlFor="language">Primary Language</InputLabel>
-              <Select labelId="language" {...register("language")} displayEmpty>
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {languageOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <CustomSelect
+              menuItems={languageOption}
+              name="language"
+              label="Primary Language"
+              control={control}
+            />
             <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
             <Input id="ehrId" type="text" {...register("ehrId")} />
+            <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
             <Button variant="contained">EHR ID Check</Button>
-            <FormControl>
-              <InputLabel htmlFor="primaryPhysician">
-                Primary Physician *
-              </InputLabel>
-              <Select
-                labelId="primaryPhysician"
-                {...register("primaryPhysician")}
-                displayEmpty
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {physicianOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <CustomSelect
+              menuItems={physicianOption}
+              name="primaryPhysician"
+              label="Primary Physician *"
+              control={control}
+            />
+            <p style={{ color: "#ff0000" }}>
+              {errors.primaryPhysician?.message}
+            </p>
             <InputLabel htmlFor="patientMedication">
               Patient Medication
             </InputLabel>
@@ -271,23 +230,12 @@ function Test2HJ() {
               variant="outlined"
               {...register("patientMedication")}
             />
-            <FormControl>
-              <InputLabel htmlFor="conditions">Conditions</InputLabel>
-              <Select
-                labelId="conditions"
-                {...register("conditions")}
-                displayEmpty
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {conditionsOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <CustomSelect
+              menuItems={conditionsOption}
+              name="conditions"
+              label="Conditions"
+              control={control}
+            />
           </div>
         </section>
 
