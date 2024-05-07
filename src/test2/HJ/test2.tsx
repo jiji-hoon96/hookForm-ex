@@ -169,97 +169,139 @@ function Test2HJ() {
           <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
           <Input id="roomNumber" type="text" />
           <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
-          <CustomSelect
-            menuItems={clinicBranchOption}
-            name="clinicBranch"
-            label="Clinic Branch *"
-            control={control}
-          />
-          <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
-
           <div>
-            <FormControl>
-              <label htmlFor="lastName">Last Name *</label>
-              <JustEnInput control={control} name="lastName" id="lastName" />
-              {errors.lastName?.message ? (
-                <FormHelperText style={{ color: "#ff0000" }}>
-                  This field is required.
-                </FormHelperText>
-              ) : null}
-            </FormControl>
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={clinicBranchOption}
+                name="clinicBranch"
+                label="Clinic Branch *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
 
-            <InputLabel htmlFor="firstName">First Name *</InputLabel>
-            <JustEnInput id="firstName" name="firstName" control={control} />
-            <p style={{ color: "#ff0000" }}>{errors.firstName?.message}</p>
-            <InputLabel htmlFor="middleName">Middle Name</InputLabel>
-            <JustEnInput id="middleName" name="middleName" control={control} />
-            <CustomSelect
-              menuItems={suffixOption}
-              name="suffix"
-              label="Suffix"
-              control={control}
-            />
-            <CustomSelect
-              menuItems={genderOption}
-              name="gender"
-              label="Gender *"
-              control={control}
-            />
-            <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
-
-            <InputLabel htmlFor="birth">Date of Birth *</InputLabel>
-            <Controller
-              name="birth"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="birth"
-                  type="date"
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
+              <FormControl>
+                <label htmlFor="lastName">Last Name *</label>
+                <JustEnInput control={control} name="lastName" id="lastName" />
+                {errors.lastName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+              <FormControl>
+                <label htmlFor="firstName">First Name *</label>
+                <JustEnInput
+                  control={control}
+                  name="firstName"
+                  id="firstName"
                 />
-              )}
-            />
-            <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
+                {errors.firstName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+              <FormControl>
+                <label htmlFor="middleName">Middle Name</label>
+                <JustEnInput
+                  control={control}
+                  name="middleName"
+                  id="middleName"
+                />
+                {errors.firstName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
 
-            <InputLabel htmlFor="height"> Height</InputLabel>
-            <JustNumInput id="height" name="height" control={control} />
-            <CustomSelect
-              menuItems={languageOption}
-              name="language"
-              label="Primary Language"
-              control={control}
-            />
-            <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
-            <Input id="ehrId" type="text" {...register("ehrId")} />
-            <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
-            <Button variant="contained">EHR ID Check</Button>
-            <CustomSelect
-              menuItems={physicianOption}
-              name="primaryPhysician"
-              label="Primary Physician *"
-              control={control}
-            />
-            <p style={{ color: "#ff0000" }}>
-              {errors.primaryPhysician?.message}
-            </p>
-            <InputLabel htmlFor="patientMedication">
-              Patient Medication
-            </InputLabel>
-            <TextField
-              id="patientMedication"
-              variant="outlined"
-              {...register("patientMedication")}
-            />
-            <CustomSelect
-              menuItems={conditionsOption}
-              name="conditions"
-              label="Conditions"
-              control={control}
-            />
+              <CustomSelect
+                menuItems={suffixOption}
+                name="suffix"
+                label="Suffix"
+                control={control}
+              />
+            </div>
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={genderOption}
+                name="gender"
+                label="Gender *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
+
+              <InputLabel htmlFor="birth">Date of Birth *</InputLabel>
+              <Controller
+                name="birth"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="birth"
+                    type="date"
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                  />
+                )}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
+
+              <InputLabel htmlFor="height"> Height</InputLabel>
+              <JustNumInput id="height" name="height" control={control} />
+              <CustomSelect
+                menuItems={languageOption}
+                name="language"
+                label="Primary Language"
+                control={control}
+              />
+            </div>
+            <div style={{ display: "flex" }}>
+              {/* <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
+              <Input id="ehrId" type="text" {...register("ehrId")} />
+              <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
+              <Button variant="contained">EHR ID Check</Button> */}
+
+              <FormControl>
+                <label htmlFor="ehrId">EHR ID</label>
+                <div style={{ display: "flex" }}>
+                  <JustEnInput control={control} name="ehrId" id="ehrId" />
+                  <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
+                  <Button
+                    variant="contained"
+                    sx={{ width: "150px", fontSize: "10px" }}
+                  >
+                    EHR ID Check
+                  </Button>
+                </div>
+              </FormControl>
+
+              <CustomSelect
+                menuItems={physicianOption}
+                name="primaryPhysician"
+                label="Primary Physician *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>
+                {errors.primaryPhysician?.message}
+              </p>
+              <InputLabel htmlFor="patientMedication">
+                Patient Medication
+              </InputLabel>
+              <TextField
+                id="patientMedication"
+                variant="outlined"
+                {...register("patientMedication")}
+              />
+              <CustomSelect
+                menuItems={conditionsOption}
+                name="conditions"
+                label="Conditions"
+                control={control}
+              />
+            </div>
           </div>
         </section>
 

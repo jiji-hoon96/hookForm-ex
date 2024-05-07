@@ -20,7 +20,7 @@ const CustomSelect = ({ menuItems, name, label, control }: Props) => {
   };
 
   return (
-    <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+    <FormControl sx={{ m: 1, width: 150, mt: 3 }}>
       <label id={label} onClick={handleToggle}>
         {label}
       </label>
