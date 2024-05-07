@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-// 핸드폰 번호 유효성 검사 정규식 ( 0으로 시작해야 하고 2-3자리 숫자 , 두번째 입력은 3-4자리 0~9 숫자, 세번째 입력은 4자리 0~9 숫자)
-const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
-const onlyAlphabetRegex = /^[a-zA-Z]+$/;
-const emailRegex =
-  /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (issue.code === z.ZodIssueCode.invalid_string) {
     return { message: "This field is required." };
@@ -40,9 +34,6 @@ export const patientFormSchema = z.object({
   ehrId: z.string({
     required_error: "This field is required",
   }),
-  // dxCode: z.string({
-  //   required_error: "This field is required",
-  // }),
   primaryPhysician: z.string().min(1),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
