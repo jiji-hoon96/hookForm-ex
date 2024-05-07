@@ -41,7 +41,7 @@ function Test2EH() {
     control,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<InsuranceSchemaType>({
     resolver: zodResolver(insuranceSchema),
   });
@@ -76,6 +76,7 @@ function Test2EH() {
 
           <Button
             variant='contained'
+            disabled={!isDirty}
             onClick={() => {
               trigger("medicareNumber");
               medicareButtonHandler();
