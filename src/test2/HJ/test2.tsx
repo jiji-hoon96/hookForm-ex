@@ -30,8 +30,6 @@ function Test2HJ() {
   const {
     register,
     handleSubmit,
-    watch,
-    getValues,
     control,
     formState: { errors },
   } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
