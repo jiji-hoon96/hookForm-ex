@@ -3,7 +3,7 @@ import { z } from "zod";
 export type InsuranceSchemaType = z.infer<typeof insuranceSchema>;
 
 export const insuranceSchema = z.object({
-  medicareNumber: z.string().min(1, "This field is required."),
+  medicareNumber: z.string().min(1, "This field is required.").optional(),
 
   billableOption: z.enum(["Medicare PPO", "Medicare HMO"]),
 

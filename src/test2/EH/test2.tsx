@@ -17,7 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { InsuranceSchemaType, insuranceSchema } from "./Schema/InsuranceSchema";
 
 const BillableOptionValue = ["Medicare PPO", "Medicare HMO"];
@@ -35,29 +35,71 @@ const PhoneTypeValue = ["Home", "Work", "Mobile"];
 const RelationshipValue = ["box1", "box2", "box3"];
 
 function Test2EH() {
+  const [isMedicareValid, setIsMedicareValid] = useState(false);
+  const [isEHRIDValid, setIsEHRIDValid] = useState(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
+  const [isEmailAddressValid, setIsEmailAddressValid] = useState(false);
+
+  const medicareButtonHandler = () => {
+    setIsMedicareValid(true);
+  };
+  const ehrIDButtonHandler = () => {
+    setIsEHRIDValid(true);
+  };
+  const phoneNumberButtonHandler = () => {
+    setIsPhoneNumberValid(true);
+  };
+  const emailAddressButtonHandler = () => {
+    setIsEmailAddressValid(true);
+  };
+
   const {
     register,
     trigger,
+    setError,
     control,
     watch,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, dirtyFields },
   } = useForm<InsuranceSchemaType>({
     resolver: zodResolver(insuranceSchema),
   });
 
-  const [isMedicareValid, setIsMedicareValid] = useState(false);
-  const medicareButtonHandler = () => {
-    setIsMedicareValid(true);
-  };
-
-  console.log(watch());
+  console.log("WATCH DATA:", watch());
+  console.log("ERRORS:", errors);
   return (
     <form
-      onSubmit={handleSubmit(
-        (data: InsuranceSchemaType) =>
-          isMedicareValid && alert(JSON.stringify(data))
-      )}
+      onSubmit={handleSubmit((data: InsuranceSchemaType) => {
+        isMedicareValid &&
+          isEHRIDValid &&
+          isPhoneNumberValid &&
+          isEmailAddressValid &&
+          alert(JSON.stringify(data));
+
+        !isMedicareValid &&
+          setError("medicareNumber", {
+            type: "manual",
+            message: "Please check for Duplication",
+          });
+
+        !isEHRIDValid &&
+          setError("ehrID", {
+            type: "manual",
+            message: "Please check for Duplication",
+          });
+
+        !isPhoneNumberValid &&
+          setError("phoneNumber", {
+            type: "manual",
+            message: "Please check for Duplication",
+          });
+
+        !isEmailAddressValid &&
+          setError("emailAddress", {
+            type: "manual",
+            message: "Please check for Duplication",
+          });
+      })}
     >
       <section style={{ display: "flex" }}>
         <p>Insurance</p>
@@ -76,7 +118,7 @@ function Test2EH() {
 
           <Button
             variant='contained'
-            disabled={!isDirty}
+            disabled={!dirtyFields.medicareNumber}
             onClick={() => {
               trigger("medicareNumber");
               medicareButtonHandler();
@@ -304,7 +346,16 @@ function Test2EH() {
             FormHelperTextProps={{ sx: { color: "red" } }}
             {...register("ehrID")}
           />
-          <Button>EHR ID Check</Button>
+          <Button
+            variant='contained'
+            disabled={!dirtyFields.ehrID}
+            onClick={() => {
+              trigger("ehrID");
+              ehrIDButtonHandler();
+            }}
+          >
+            EHR ID Check
+          </Button>
         </div>
 
         <div>
@@ -387,7 +438,16 @@ function Test2EH() {
             FormHelperTextProps={{ sx: { color: "red" } }}
             {...register("phoneNumber")}
           />
-          <Button>Phone Check</Button>
+          <Button
+            variant='contained'
+            disabled={!dirtyFields.phoneNumber}
+            onClick={() => {
+              trigger("phoneNumber");
+              phoneNumberButtonHandler();
+            }}
+          >
+            Phone Check
+          </Button>
         </div>
 
         <div>
@@ -403,7 +463,16 @@ function Test2EH() {
             }
             {...register("emailAddress")}
           />
-          <Button>Email Check</Button>
+          <Button
+            variant='contained'
+            disabled={!dirtyFields.emailAddress}
+            onClick={() => {
+              trigger("emailAddress");
+              emailAddressButtonHandler();
+            }}
+          >
+            Email Check
+          </Button>
         </div>
       </section>
 
