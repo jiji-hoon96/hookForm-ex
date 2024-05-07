@@ -5,9 +5,9 @@ export type InsuranceSchemaType = z.infer<typeof insuranceSchema>;
 export const insuranceSchema = z.object({
   medicareNumber: z.string().min(1, "This field is required."),
 
-  date: z.string().date().optional(),
-
   billableOption: z.enum(["Medicare PPO", "Medicare HMO"]),
+
+  date: z.string().date().optional(),
 
   medicareAdvantage: z
     .enum(["box1", "box2", "box3", "defaultValue"])

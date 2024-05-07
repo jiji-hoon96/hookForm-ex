@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Radio,
   FormControlLabel,
@@ -12,9 +11,14 @@ import {
   Checkbox,
   FormHelperText,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
 import { InsuranceSchemaType, insuranceSchema } from "./Schema/InsuranceSchema";
 import FormedInput from "./entity/FormedInput";
+import dayjs from "dayjs";
 
 const BillableOptionValue = ["Medicare PPO", "Medicare HMO"];
 const MedicareAdvantageValue = ["box1", "box2", "box3"];
@@ -28,7 +32,6 @@ const DXCodeValue = ["box1", "box2", "box3"];
 const PrimaryPhysicianValue = ["box1", "box2", "box3"];
 const ConditionValue = ["box1", "box2", "box3"];
 const PhoneTypeValue = ["Home", "Work", "Mobile"];
-
 const RelationshipValue = ["box1", "box2", "box3"];
 
 function Test2EH() {
@@ -88,7 +91,20 @@ function Test2EH() {
 
           <div>
             <InputLabel>Effective Start Date</InputLabel>
-            <TextField type='date' />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Controller
+                control={control}
+                name='date'
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    onChange={(date) =>
+                      onChange(dayjs(date).format("YYYY-MM-DD"))
+                    }
+                    value={value ? dayjs(value) : null}
+                  />
+                )}
+              />
+            </LocalizationProvider>
           </div>
         </section>
 
