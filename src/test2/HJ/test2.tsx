@@ -18,7 +18,13 @@ import Button from "@mui/material/Button";
 import JustEnInput from "./JustEnInput";
 import CustomSelect from "./CustomSelect";
 import JustNumInput from "./JustNumInput";
-import { FormControl, FormHelperText } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 function Test2HJ() {
   const {
@@ -70,7 +76,7 @@ function Test2HJ() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <section>
+        <section>
           <div
             style={{
               display: "flex",
@@ -86,12 +92,43 @@ function Test2HJ() {
             <Input id="medicareNumber" type="text" />
             <Button variant="contained">Medicare Check</Button>
 
+            <InputLabel htmlFor="medicareNumber">Medicare Number *</InputLabel>
+            <Controller
+              name="medicareNumber"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="medicareNumber"
+                  type="text"
+                  onChange={(e) => {
+                    field.onChange(
+                      e.target.value
+                        .replace(/[^\dA-Za-z가-힣]/g, "") // 숫자, 영어, 한글 이외의 문자 제거
+                        .replace(
+                          /^([\dA-Za-z가-힣]{0,3})([\dA-Za-z가-힣]{0,4})([\dA-Za-z가-힣]{0,4})$/,
+                          (_, a, b, c) => {
+                            const parts = [a, b, c];
+                            const filteredParts = parts.filter(
+                              (part) => part !== ""
+                            );
+                            return filteredParts.join("-");
+                          }
+                        )
+                        .replace(/(-{1,2})$/, "")
+                    );
+                  }}
+                />
+              )}
+            />
+
             <FormControl>
               <FormLabel>Billable Option</FormLabel>
-              <RadioGroup value={BillableValue} onChange={handleChangeBill}>
+              <RadioGroup>
                 <FormControlLabel
                   value="Billable PPO"
-                  control={<Radio />}
+                  control={<Radio defaultChecked />}
                   label="Billable PPO"
                   {...register("billableOption")}
                 />
@@ -102,13 +139,12 @@ function Test2HJ() {
                   {...register("billableOption")}
                 />
               </RadioGroup>
-              <input type="radio" {...register("billableOption")} />
             </FormControl>
 
             <InputLabel htmlFor="startDate">Effective Start Date</InputLabel>
             <Input id="startDate" type="date" />
 
-            <FormControl>
+            {/* <FormControl>
               <Select
                 value={medicareAdvantage}
                 {...register("medicareAdvantage")}
@@ -121,11 +157,11 @@ function Test2HJ() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
             <InputLabel htmlFor="medicareAdvantageGroupNumber">
               Medicare Advantage group number
             </InputLabel>
-            <Input id="medicareAdvantageGroupNumber" type="text" />
+            <Input id="medicareAdvantageGroupNumber" type="text" disabled />
 
             <InputLabel htmlFor="medicareAdvantageIndividualNumber">
               Medicare Advantage individual number
@@ -136,9 +172,9 @@ function Test2HJ() {
             <Input id="medicalNumber" type="text" />
             <Button variant="contained">Medi-CAL Check</Button>
           </div>
-        </section> */}
+        </section>
 
-        <section>
+        {/* <section>
           <div
             style={{
               display: "flex",
@@ -281,7 +317,7 @@ function Test2HJ() {
               control={control}
             />
           </div>
-        </section>
+        </section> */}
 
         {/* <section>
           <div
