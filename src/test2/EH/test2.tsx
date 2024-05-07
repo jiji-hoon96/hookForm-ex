@@ -61,14 +61,11 @@ function Test2EH() {
         <section style={{ display: "flex" }}>
           <div>
             <InputLabel>Medicare Number*</InputLabel>
-            <FormedInput
-              name='medicareNumber'
-              control={control}
-              textFieldProps={{
-                variant: "standard",
-                helperText: errors.medicareNumber?.message,
-                FormHelperTextProps: { ...{ sx: { color: "red" } } },
-              }}
+            <TextField
+              variant='standard'
+              helperText={errors.medicareNumber?.message}
+              FormHelperTextProps={{ sx: { color: "red" } }}
+              {...register("medicareNumber")}
             />
 
             <Button variant='contained'>Medicare Check</Button>
