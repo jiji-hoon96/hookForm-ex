@@ -18,6 +18,8 @@ z.setErrorMap(customErrorMap);
 z.string({ errorMap: customErrorMap });
 
 export const patientFormSchema = z.object({
+  billableOption: z.string(),
+  medicareNumber: z.string(),
   facility: z.string().min(1),
   selectRoomNumber: z.string().min(1),
   clinicBranch: z.string().min(1),
