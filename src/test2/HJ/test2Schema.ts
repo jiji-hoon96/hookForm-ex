@@ -18,12 +18,13 @@ z.string({ errorMap: customErrorMap });
 
 export const patientFormSchema = z.object({
   billableOption: z.string(),
-  medicareNumber: z.string(),
+  medicareNumber: z.string().min(1),
   facility: z.string().min(1),
   selectRoomNumber: z.string().min(1),
+  roomNumber: z.string().min(1),
   clinicBranch: z.string().min(1),
-  lastName: z.string(),
-  firstName: z.string(),
+  lastName: z.string().min(1),
+  firstName: z.string().min(1),
   middleName: z.string().optional(),
   suffix: z.string().optional(),
   gender: z.string().min(1),
@@ -38,7 +39,10 @@ export const patientFormSchema = z.object({
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
   phone: z.string().optional(),
-  email: z.string().email({ message: "이메일 형식을 맞춰주세요" }),
+  email: z
+    .string()
+    .min(1, { message: "This field is required" })
+    .email({ message: "이메일 형식을 맞춰주세요" }),
   emergencyContactsLast: z.string().optional(),
   emergencyContactsFirst: z.string().optional(),
   emergencyContactsMiddle: z.string().optional(),
