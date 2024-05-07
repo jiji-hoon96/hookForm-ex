@@ -76,7 +76,7 @@ function Test2HJ() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <section>
+        <section>
           <div
             style={{
               display: "flex",
@@ -137,9 +137,9 @@ function Test2HJ() {
               </RadioGroup>
             </FormControl>
           </div>
-        </section> */}
+        </section>
 
-        {/* <section>
+        <section>
           <div
             style={{
               display: "flex",
@@ -151,28 +151,6 @@ function Test2HJ() {
               <FormControlLabel control={<Checkbox />} label="LTC" />
             </FormGroup>
           </div>
-
-          <InputLabel htmlFor="phone">phone *</InputLabel>
-          <Controller
-            name="phone"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <Input
-                {...field}
-                id="phone"
-                type="text"
-                onChange={(e) => {
-                  field.onChange(
-                    e.target.value
-                      .replace(/[^\d]/g, "")
-                      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-                      .replace(/(-{1,2})$/g, "")
-                  );
-                }}
-              />
-            )}
-          />
 
           <CustomSelect
             menuItems={facilityOption}
@@ -282,7 +260,7 @@ function Test2HJ() {
               control={control}
             />
           </div>
-        </section> */}
+        </section>
 
         <section>
           <div
@@ -295,86 +273,72 @@ function Test2HJ() {
           </div>
 
           <div>
-            <FormControl>
-              <InputLabel htmlFor="phoneType">Phone Type *</InputLabel>
-              <Select
-                labelId="phoneType"
-                value={phoneType}
-                // {...register("medicareAdvantage")}
-                onChange={handleChangePhoneType}
-                // input={<OutlinedInput label="phoneType" />}
-                displayEmpty
-                renderValue={
-                  phoneType !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {phoneTypeOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <InputLabel htmlFor="phone">phone *</InputLabel>
+            <Controller
+              name="phone"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="phone"
+                  type="text"
+                  onChange={(e) => {
+                    field.onChange(
+                      e.target.value
+                        .replace(/[^\d]/g, "")
+                        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                        .replace(/(-{1,2})$/g, "")
+                    );
+                  }}
+                />
+              )}
+            />
 
-            <InputLabel htmlFor="phoneNumber">Phone Number *</InputLabel>
-            <Input id="phoneNumber" type="text"></Input>
-            <Button variant="contained">Phone Check</Button>
+            <InputLabel htmlFor="email">Email Address *</InputLabel>
+            <Input id="email" type="text" {...register("email")} />
 
-            <FormGroup>
-              <InputLabel htmlFor="email">Email Address *</InputLabel>
-              <Input id="email" type="email"></Input>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="patient does not have email"
-              />
-              <Button variant="contained">Email Check</Button>
-            </FormGroup>
+            <label htmlFor="emergencyContacts">Emergency Contacts</label>
+            <JustEnInput
+              control={control}
+              name="emergencyContactsLast"
+              id="emergencyContacts"
+              placeholder="Name(last)"
+            />
+            <JustEnInput
+              control={control}
+              name="emergencyContactsFirst"
+              id="emergencyContactsFirst"
+              placeholder="Name(first)"
+            />
+            <JustEnInput
+              control={control}
+              name="emergencyContactsMiddle"
+              id="emergencyContactsMiddle"
+              placeholder="Name(middle)"
+            />
 
-            <InputLabel htmlFor="emergencyContacts">
-              Emergency Contacts
-            </InputLabel>
-            <Input id="emergencyContacts" placeholder="Name(last)" />
-            <Input id="emergencyContacts" placeholder="Name(first)" />
-            <Input id="emergencyContacts" placeholder="Name(middle)" />
-
-            <FormControl>
-              <Select
-                labelId="relationship"
-                value={relationship}
-                // {...register("relationship")}
-                onChange={handleChangeRelationship}
-                // input={<OutlinedInput label="relationship" />}
-                displayEmpty
-                renderValue={
-                  relationship !== "" ? undefined : () => <p>Relationship</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {relationshipOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <Input id="relationship" placeholder="Contact Number"></Input>
-
-            <InputLabel htmlFor="streetAddress">Street Address</InputLabel>
-            <Input id="streetAddress" />
-            <InputLabel htmlFor="apt">Apt, suite, etc.(optional)</InputLabel>
-            <Input id="apt" />
-            <InputLabel htmlFor="city">City</InputLabel>
-            <Input id="city" />
-            <InputLabel htmlFor="state">State / Province</InputLabel>
-            <Input id="state" />
-            <InputLabel htmlFor="zip">ZIP / Postal</InputLabel>
-            <Input id="zip" />
+            <Controller
+              name="relationship"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="relationship"
+                  type="text"
+                  placeholder="Contact Number"
+                  onChange={(e) => {
+                    field.onChange(
+                      e.target.value
+                        .replace(/[^\d]/g, "")
+                        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                        .replace(/(-{1,2})$/g, "")
+                    );
+                  }}
+                />
+              )}
+            />
           </div>
         </section>
         <Button variant="contained" type="submit">

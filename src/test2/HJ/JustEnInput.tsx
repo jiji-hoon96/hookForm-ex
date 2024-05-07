@@ -4,11 +4,12 @@ import Input from "@mui/material/Input";
 
 interface Props {
   id: string;
+  placeholder?: string;
   name: FieldPath<PatientFormSchema>;
   control: Control<PatientFormSchema>;
 }
 
-const JustEnInput = ({ id, name, control }: Props) => {
+const JustEnInput = ({ id, name, control, placeholder }: Props) => {
   return (
     <Controller
       name={name}
@@ -18,8 +19,14 @@ const JustEnInput = ({ id, name, control }: Props) => {
         <Input
           {...field}
           id={id}
+          placeholder={placeholder}
           onChange={(e) => {
-            field.onChange(e.target.value.replace(/[^A-Za-z]/gi, ""));
+            field.onChange(
+              e.target.value.replace(/[^A-Za-z]/gi, "")[0].toUpperCase() +
+                e.target.value
+                  .replace(/[^A-Za-z]/gi, "")
+                  .slice(1, e.target.value.replace(/[^A-Za-z]/gi, "").length)
+            );
           }}
         />
       )}

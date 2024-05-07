@@ -3,6 +3,8 @@ import { z } from "zod";
 // 핸드폰 번호 유효성 검사 정규식 ( 0으로 시작해야 하고 2-3자리 숫자 , 두번째 입력은 3-4자리 0~9 숫자, 세번째 입력은 4자리 0~9 숫자)
 const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
 const onlyAlphabetRegex = /^[a-zA-Z]+$/;
+const emailRegex =
+  /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
 
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (issue.code === z.ZodIssueCode.invalid_string) {
@@ -10,6 +12,9 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   }
   if (issue.code === z.ZodIssueCode.too_small) {
     return { message: "This field is required." };
+  }
+  if (issue.code === z.ZodIssueCode.invalid_type) {
+    return { message: "Please format correctly" };
   }
   return { message: ctx.defaultError };
 };
@@ -23,8 +28,8 @@ export const patientFormSchema = z.object({
   facility: z.string().min(1),
   selectRoomNumber: z.string().min(1),
   clinicBranch: z.string().min(1),
-  lastName: z.string().regex(onlyAlphabetRegex),
-  firstName: z.string().regex(onlyAlphabetRegex),
+  lastName: z.string(),
+  firstName: z.string(),
   middleName: z.string().optional(),
   suffix: z.string().optional(),
   gender: z.string().min(1),
@@ -42,6 +47,11 @@ export const patientFormSchema = z.object({
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
   phone: z.string().optional(),
+  email: z.string().email({ message: "이메일 형식을 맞춰주세요" }),
+  emergencyContactsLast: z.string().optional(),
+  emergencyContactsFirst: z.string().optional(),
+  emergencyContactsMiddle: z.string().optional(),
+  relationship: z.string().optional(),
 });
 
 export type PatientFormSchema = z.infer<typeof patientFormSchema>;
