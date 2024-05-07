@@ -76,7 +76,7 @@ function Test2HJ() {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <section>
+        {/* <section>
           <div
             style={{
               display: "flex",
@@ -88,10 +88,6 @@ function Test2HJ() {
             <p>* required field</p>
           </div>
           <div>
-            <InputLabel htmlFor="medicareNumber">Medicare Number *</InputLabel>
-            <Input id="medicareNumber" type="text" />
-            <Button variant="contained">Medicare Check</Button>
-
             <InputLabel htmlFor="medicareNumber">Medicare Number *</InputLabel>
             <Controller
               name="medicareNumber"
@@ -140,39 +136,8 @@ function Test2HJ() {
                 />
               </RadioGroup>
             </FormControl>
-
-            <InputLabel htmlFor="startDate">Effective Start Date</InputLabel>
-            <Input id="startDate" type="date" />
-
-            {/* <FormControl>
-              <Select
-                value={medicareAdvantage}
-                {...register("medicareAdvantage")}
-                onChange={handleChangeMedicareOption}
-                input={<OutlinedInput />}
-              >
-                {medicareAdvantageOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-            <InputLabel htmlFor="medicareAdvantageGroupNumber">
-              Medicare Advantage group number
-            </InputLabel>
-            <Input id="medicareAdvantageGroupNumber" type="text" disabled />
-
-            <InputLabel htmlFor="medicareAdvantageIndividualNumber">
-              Medicare Advantage individual number
-            </InputLabel>
-            <Input id="medicareAdvantageIndividualNumber" type="text" />
-
-            <InputLabel htmlFor="medicalNumber">Medi-CAL Number</InputLabel>
-            <Input id="medicalNumber" type="text" />
-            <Button variant="contained">Medi-CAL Check</Button>
           </div>
-        </section>
+        </section> */}
 
         {/* <section>
           <div
@@ -319,7 +284,7 @@ function Test2HJ() {
           </div>
         </section> */}
 
-        {/* <section>
+        <section>
           <div
             style={{
               display: "flex",
@@ -411,8 +376,7 @@ function Test2HJ() {
             <InputLabel htmlFor="zip">ZIP / Postal</InputLabel>
             <Input id="zip" />
           </div>
-          
-        </section> */}
+        </section>
         <Button variant="contained" type="submit">
           Save
         </Button>
