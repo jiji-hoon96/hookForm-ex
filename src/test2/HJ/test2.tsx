@@ -34,6 +34,9 @@ function Test2HJ() {
     formState: { errors },
   } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
 
+  const [isLTC, setIsLTC] = useState<boolean>(false);
+  const [selectRoomNumber, setSelectRoomNumber] = useState<string>("");
+
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
   const selectRoomNumberOption = ["Enter the Room No", "000", "123", "abc"];
@@ -70,6 +73,7 @@ function Test2HJ() {
   };
 
   console.log(errors);
+  console.log(isLTC);
 
   return (
     <>
@@ -145,30 +149,54 @@ function Test2HJ() {
             }}
           >
             <p>Patient profile</p>
-            <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="LTC" />
-            </FormGroup>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={isLTC}
+                  onChange={(e) => setIsLTC(e.target.checked)}
+                />
+              }
+              label="LTC"
+            />
           </div>
+          {isLTC ? (
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={facilityOption}
+                name="facility"
+                label="Facility *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.facility?.message}</p>
 
-          <CustomSelect
-            menuItems={facilityOption}
-            name="facility"
-            label="Facility *"
-            control={control}
-          />
-          <p style={{ color: "#ff0000" }}>{errors.facility?.message}</p>
+              <CustomSelect
+                menuItems={selectRoomNumberOption}
+                name="selectRoomNumber"
+                label="Room No *"
+                control={control}
+                itemValue={selectRoomNumber}
+              />
+              <p style={{ color: "#ff0000" }}>
+                {errors.selectRoomNumber?.message}
+              </p>
+              {selectRoomNumber == "Enter the Room No" ? (
+                <>
+                  <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
+                  <Input id="roomNumber" type="text" />
+                  <p style={{ color: "#ff0000" }}>
+                    {errors.roomNumber?.message}
+                  </p>
+                </>
+              ) : null}
+              <FormControl>
+                <label htmlFor="roomNumber">Room No *</label>
+                <Input id="roomNumber" type="text" />
+                <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
+              </FormControl>
+            </div>
+          ) : null}
 
-          <CustomSelect
-            menuItems={selectRoomNumberOption}
-            name="selectRoomNumber"
-            label="Room No *"
-            control={control}
-          />
-          <p style={{ color: "#ff0000" }}>{errors.selectRoomNumber?.message}</p>
-
-          <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
-          <Input id="roomNumber" type="text" />
-          <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
           <div>
             <div style={{ display: "flex" }}>
               <CustomSelect
@@ -259,11 +287,6 @@ function Test2HJ() {
               />
             </div>
             <div style={{ display: "flex" }}>
-              {/* <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
-              <Input id="ehrId" type="text" {...register("ehrId")} />
-              <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
-              <Button variant="contained">EHR ID Check</Button> */}
-
               <FormControl>
                 <label htmlFor="ehrId">EHR ID</label>
                 <div style={{ display: "flex" }}>
