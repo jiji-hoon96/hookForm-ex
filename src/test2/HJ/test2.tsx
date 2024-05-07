@@ -116,7 +116,7 @@ function Test2HJ() {
                 />
               )}
             />
-
+            <p style={{ color: "#ff0000" }}>{errors.medicareNumber?.message}</p>
             <FormControl>
               <FormLabel>Billable Option</FormLabel>
               <RadioGroup>
@@ -168,7 +168,7 @@ function Test2HJ() {
 
           <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
           <Input id="roomNumber" type="text" />
-
+          <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
           <CustomSelect
             menuItems={clinicBranchOption}
             name="clinicBranch"
@@ -181,8 +181,11 @@ function Test2HJ() {
             <FormControl>
               <label htmlFor="lastName">Last Name *</label>
               <JustEnInput control={control} name="lastName" id="lastName" />
-              <FormHelperText>daf</FormHelperText>
-              <p style={{ color: "#ff0000" }}>{errors.lastName?.message}</p>
+              {errors.lastName?.message ? (
+                <FormHelperText style={{ color: "#ff0000" }}>
+                  This field is required.
+                </FormHelperText>
+              ) : null}
             </FormControl>
 
             <InputLabel htmlFor="firstName">First Name *</InputLabel>
@@ -292,10 +295,10 @@ function Test2HJ() {
                 />
               )}
             />
-
+            <p style={{ color: "#ff0000" }}>{errors.phone?.message}</p>
             <InputLabel htmlFor="email">Email Address *</InputLabel>
             <Input id="email" type="text" {...register("email")} />
-
+            <p style={{ color: "#ff0000" }}>{errors.email?.message}</p>
             <label htmlFor="emergencyContacts">Emergency Contacts</label>
             <JustEnInput
               control={control}
