@@ -151,6 +151,28 @@ function Test2HJ() {
             </FormGroup>
           </div>
 
+          <InputLabel htmlFor="phone">phone *</InputLabel>
+          <Controller
+            name="phone"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Input
+                {...field}
+                id="phone"
+                type="text"
+                onChange={(e) => {
+                  field.onChange(
+                    e.target.value
+                      .replace(/[^\d]/g, "")
+                      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                      .replace(/(-{1,2})$/g, "")
+                  );
+                }}
+              />
+            )}
+          />
+
           <CustomSelect
             menuItems={facilityOption}
             name="facility"
