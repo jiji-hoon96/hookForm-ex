@@ -39,6 +39,7 @@ export const patientFormSchema = z.object({
   primaryPhysician: z.string().min(1),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export type PatientFormSchema = z.infer<typeof patientFormSchema>;
