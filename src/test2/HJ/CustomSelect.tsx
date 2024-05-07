@@ -9,10 +9,17 @@ interface Props {
   name: FieldPath<PatientFormSchema>;
   control: Control<PatientFormSchema>;
   menuItems: string[];
+  itemValue?: string;
   label: string;
 }
 
-const CustomSelect = ({ menuItems, name, label, control }: Props) => {
+const CustomSelect = ({
+  menuItems,
+  name,
+  label,
+  control,
+  itemValue,
+}: Props) => {
   const [open, setOpen] = useState(false);
 
   const handleToggle = () => {
@@ -37,7 +44,11 @@ const CustomSelect = ({ menuItems, name, label, control }: Props) => {
             onClose={handleToggle}
             {...field}
           >
-            <MenuItem value="" disabled style={{ display: "none" }}>
+            <MenuItem
+              value={itemValue ? itemValue : ""}
+              disabled
+              style={{ display: "none" }}
+            >
               Select...
             </MenuItem>
             {menuItems.map((item) => (
