@@ -17,7 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller, set } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { InsuranceSchemaType, insuranceSchema } from "./Schema/InsuranceSchema";
 
 const BillableOptionValue = ["Medicare PPO", "Medicare HMO"];
