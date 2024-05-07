@@ -30,6 +30,7 @@ function Test2HJ() {
   const {
     register,
     getValues,
+    watch,
     handleSubmit,
     control,
     formState: { errors },
@@ -80,10 +81,13 @@ function Test2HJ() {
   const isAllTrue = Object.values(isValidationStatus).every(
     (status) => status === true
   );
-  console.log("isAllTrue", isAllTrue);
 
   const onSubmit: SubmitHandler<PatientFormSchema> = (data) => {
-    console.log(data);
+    if (isAllTrue === true) {
+      console.log(data);
+    } else {
+      console.log("checking button");
+    }
   };
 
   console.log(errors);
@@ -193,18 +197,26 @@ function Test2HJ() {
               <p style={{ color: "#ff0000" }}>
                 {errors.selectRoomNumber?.message}
               </p>
-              {selectRoomNumber == "Enter the Room No" ? (
+              {/* {selectRoomNumber == "Enter the Room No" ? (
                 <>
                   <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
-                  <Input id="roomNumber" type="text" />
+                  <Input
+                    id="roomNumber"
+                    type="text"
+                    {...register("roomNumber")}
+                  />
                   <p style={{ color: "#ff0000" }}>
                     {errors.roomNumber?.message}
                   </p>
                 </>
-              ) : null}
+              ) : null} */}
               <FormControl>
                 <label htmlFor="roomNumber">Room No *</label>
-                <Input id="roomNumber" type="text" />
+                <Input
+                  id="roomNumber"
+                  type="text"
+                  {...register("roomNumber")}
+                />
                 <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
               </FormControl>
             </div>
@@ -308,9 +320,26 @@ function Test2HJ() {
                   <Button
                     variant="contained"
                     sx={{ width: "150px", fontSize: "10px" }}
+                    onClick={() => {
+                      const value = getValues("ehrId");
+                      if (value.length >= 1) {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: true,
+                        }));
+                      } else {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: false,
+                        }));
+                      }
+                    }}
                   >
                     EHR ID Check
                   </Button>
+                  {isValidationStatus.ehrId === false ? (
+                    <p style={{ color: "#ff0000" }}>checking button</p>
+                  ) : null}
                 </div>
               </FormControl>
 
@@ -393,11 +422,13 @@ function Test2HJ() {
                         email: true,
                       }));
                     }
-                    console.log(isValidationStatus);
                   }}
                 >
                   Email Check
                 </Button>
+                {isValidationStatus.email === false ? (
+                  <p style={{ color: "#ff0000" }}>checking button</p>
+                ) : null}
               </div>
             </div>
             <div>
