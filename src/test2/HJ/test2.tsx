@@ -29,6 +29,7 @@ import {
 function Test2HJ() {
   const {
     register,
+    getValues,
     handleSubmit,
     control,
     formState: { errors },
@@ -36,6 +37,10 @@ function Test2HJ() {
 
   const [isLTC, setIsLTC] = useState<boolean>(false);
   const [selectRoomNumber, setSelectRoomNumber] = useState<string>("");
+  const [isValidationStatus, setIsValidationStatus] = useState({
+    ehrId: false,
+    email: false,
+  });
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
@@ -68,12 +73,20 @@ function Test2HJ() {
     "Other relationship",
   ];
 
+  const handleCheckValidation = () => {
+    console.log("");
+  };
+
+  const isAllTrue = Object.values(isValidationStatus).every(
+    (status) => status === true
+  );
+  console.log("isAllTrue", isAllTrue);
+
   const onSubmit: SubmitHandler<PatientFormSchema> = (data) => {
     console.log(data);
   };
 
   console.log(errors);
-  console.log(isLTC);
 
   return (
     <>
@@ -339,72 +352,97 @@ function Test2HJ() {
           </div>
 
           <div>
-            <InputLabel htmlFor="phone">phone *</InputLabel>
-            <Controller
-              name="phone"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="phone"
-                  type="text"
-                  onChange={(e) => {
-                    field.onChange(
-                      e.target.value
-                        .replace(/[^\d]/g, "")
-                        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-                        .replace(/(-{1,2})$/g, "")
-                    );
+            <div style={{ display: "flex" }}>
+              <InputLabel htmlFor="phone">phone *</InputLabel>
+              <Controller
+                name="phone"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="phone"
+                    type="text"
+                    onChange={(e) => {
+                      field.onChange(
+                        e.target.value
+                          .replace(/[^\d]/g, "")
+                          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                          .replace(/(-{1,2})$/g, "")
+                      );
+                    }}
+                  />
+                )}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.phone?.message}</p>
+              <InputLabel htmlFor="email">Email Address *</InputLabel>
+              <div style={{ display: "flex" }}>
+                <Input id="email" type="text" {...register("email")} />
+                <p style={{ color: "#ff0000" }}>{errors.email?.message}</p>
+                <Button
+                  variant="contained"
+                  sx={{ width: "150px", fontSize: "10px" }}
+                  onClick={() => {
+                    const value = getValues("email");
+                    const emailRegex =
+                      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+                    const isEmailValid = emailRegex.test(value);
+                    if (isEmailValid === true) {
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: true,
+                      }));
+                    }
+                    console.log(isValidationStatus);
                   }}
-                />
-              )}
-            />
-            <p style={{ color: "#ff0000" }}>{errors.phone?.message}</p>
-            <InputLabel htmlFor="email">Email Address *</InputLabel>
-            <Input id="email" type="text" {...register("email")} />
-            <p style={{ color: "#ff0000" }}>{errors.email?.message}</p>
-            <label htmlFor="emergencyContacts">Emergency Contacts</label>
-            <JustEnInput
-              control={control}
-              name="emergencyContactsLast"
-              id="emergencyContacts"
-              placeholder="Name(last)"
-            />
-            <JustEnInput
-              control={control}
-              name="emergencyContactsFirst"
-              id="emergencyContactsFirst"
-              placeholder="Name(first)"
-            />
-            <JustEnInput
-              control={control}
-              name="emergencyContactsMiddle"
-              id="emergencyContactsMiddle"
-              placeholder="Name(middle)"
-            />
+                >
+                  Email Check
+                </Button>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="emergencyContacts">Emergency Contacts</label>
+              <JustEnInput
+                control={control}
+                name="emergencyContactsLast"
+                id="emergencyContacts"
+                placeholder="Name(last)"
+              />
+              <JustEnInput
+                control={control}
+                name="emergencyContactsFirst"
+                id="emergencyContactsFirst"
+                placeholder="Name(first)"
+              />
+              <JustEnInput
+                control={control}
+                name="emergencyContactsMiddle"
+                id="emergencyContactsMiddle"
+                placeholder="Name(middle)"
+              />
 
-            <Controller
-              name="relationship"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="relationship"
-                  type="text"
-                  placeholder="Contact Number"
-                  onChange={(e) => {
-                    field.onChange(
-                      e.target.value
-                        .replace(/[^\d]/g, "")
-                        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
-                        .replace(/(-{1,2})$/g, "")
-                    );
-                  }}
-                />
-              )}
-            />
+              <Controller
+                name="relationship"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="relationship"
+                    type="text"
+                    placeholder="Contact Number"
+                    onChange={(e) => {
+                      field.onChange(
+                        e.target.value
+                          .replace(/[^\d]/g, "")
+                          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                          .replace(/(-{1,2})$/g, "")
+                      );
+                    }}
+                  />
+                )}
+              />
+            </div>
           </div>
         </section>
         <Button variant="contained" type="submit">
