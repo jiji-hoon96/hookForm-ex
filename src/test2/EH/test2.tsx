@@ -110,7 +110,6 @@ function Test2EH() {
     resolver: zodResolver(insuranceSchema),
   });
 
-  console.log("WATCH DATA:", watch());
   return (
     <form
       onSubmit={handleSubmit((data: InsuranceSchemaType) => {
