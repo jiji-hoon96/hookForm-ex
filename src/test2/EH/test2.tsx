@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import {
   Radio,
   FormControlLabel,
@@ -16,9 +16,10 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { IMaskInput } from "react-imask";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { InsuranceSchemaType, insuranceSchema } from "./Schema/InsuranceSchema";
+import { InsuranceSchemaType, insuranceSchema } from "./schema/InsuranceSchema";
 
 const BillableOptionValue = ["Medicare PPO", "Medicare HMO"];
 const MedicareAdvantageValue = ["box1", "box2", "box3"];
@@ -33,6 +34,50 @@ const PrimaryPhysicianValue = ["box1", "box2", "box3"];
 const ConditionValue = ["box1", "box2", "box3"];
 const PhoneTypeValue = ["Home", "Work", "Mobile"];
 const RelationshipValue = ["box1", "box2", "box3"];
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const TextMaskCustom = forwardRef<HTMLInputElement, CustomProps>(
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask='0000-000-0000'
+        placeholder='____-___-____'
+        lazy={false}
+        inputRef={ref}
+        onAccept={(value: string) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  }
+);
+
+const HeightMask = forwardRef<HTMLInputElement, CustomProps>(
+  function HeightMask(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="0'   00''"
+        placeholder="0'   00''"
+        placeholderChar='0'
+        lazy={false}
+        inputRef={ref}
+        onAccept={(value: string) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  }
+);
 
 function Test2EH() {
   const [isMedicareValid, setIsMedicareValid] = useState(false);
@@ -66,7 +111,6 @@ function Test2EH() {
   });
 
   console.log("WATCH DATA:", watch());
-  console.log("ERRORS:", errors);
   return (
     <form
       onSubmit={handleSubmit((data: InsuranceSchemaType) => {
@@ -111,6 +155,11 @@ function Test2EH() {
           <InputLabel>Medicare Number*</InputLabel>
           <TextField
             variant='standard'
+            InputProps={{
+              inputComponent: TextMaskCustom as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+            }}
             helperText={errors.medicareNumber?.message}
             FormHelperTextProps={{ sx: { color: "red" } }}
             {...register("medicareNumber")}
@@ -317,8 +366,16 @@ function Test2EH() {
         <div>
           <InputLabel>Height</InputLabel>
           <TextField
+            {...register("height")}
             variant='standard'
             FormHelperTextProps={{ sx: { color: "red" } }}
+            InputProps={{
+              inputComponent: HeightMask as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+              mask: "0'   00''",
+              placeholder: "0'   00''",
+            }}
           />
         </div>
 
@@ -435,6 +492,11 @@ function Test2EH() {
           <TextField
             variant='standard'
             helperText={errors.phoneNumber?.message}
+            InputProps={{
+              inputComponent: TextMaskCustom as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+            }}
             FormHelperTextProps={{ sx: { color: "red" } }}
             {...register("phoneNumber")}
           />
