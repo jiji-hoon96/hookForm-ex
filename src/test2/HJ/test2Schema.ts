@@ -43,6 +43,7 @@ export const patientFormSchema = z.object({
   primaryPhysician: z.string().min(1),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
+  phoneType: z.string(),
   phone: z.string().optional(),
   email: z
     .string()
@@ -52,6 +53,12 @@ export const patientFormSchema = z.object({
   emergencyContactsFirst: z.string().optional(),
   emergencyContactsMiddle: z.string().optional(),
   relationship: z.string().optional(),
+  contactNumber: z.string().optional(),
+  streetAddress: z.string().optional(),
+  apt: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zip: z.string().optional(),
 });
 
 export type PatientFormSchema = z.infer<typeof patientFormSchema>;

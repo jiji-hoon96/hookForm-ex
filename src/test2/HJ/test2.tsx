@@ -57,6 +57,7 @@ function Test2HJ() {
     "hicarenetBrance",
     "Text Hicare Branch",
   ];
+  const phoneTypeOption = ["Mobile", "Home", "Work"];
   const suffixOption = [
     "JR Junior",
     "SR Junior",
@@ -72,7 +73,6 @@ function Test2HJ() {
   const languageOption = ["English", "Spanish", "Korean"];
   const physicianOption = ["Testu, Ser", "Abx, Aaa", "Teee, St", "Hhh, H"];
   const conditionsOption = ["Alzheimer", "Bariatrics", "Cancer", "Dementia"];
-  const phoneTypeOption = ["Home", "Mobile", "Work", "Other"];
   const relationshipOption = [
     "Spouse",
     "Family Member",
@@ -506,6 +506,14 @@ function Test2HJ() {
           </div>
 
           <div>
+            <div>
+              <CustomSelect
+                menuItems={phoneTypeOption}
+                name="phoneType"
+                label="Phone Type *"
+                control={control}
+              />
+            </div>
             <div style={{ display: "flex" }}>
               <InputLabel htmlFor="phone">phone *</InputLabel>
               <Controller
@@ -594,15 +602,22 @@ function Test2HJ() {
                 id="emergencyContactsMiddle"
                 placeholder="Name(middle)"
               />
-
+              <div>
+                <CustomSelect
+                  menuItems={relationshipOption}
+                  name="relationship"
+                  control={control}
+                  label="relationship"
+                />
+              </div>
               <Controller
-                name="relationship"
+                name="contactNumber"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
                   <Input
                     {...field}
-                    id="relationship"
+                    id="contactNumber"
                     type="text"
                     placeholder="Contact Number"
                     onChange={(e) => {
@@ -615,6 +630,36 @@ function Test2HJ() {
                     }}
                   />
                 )}
+              />
+              <JustEnInput
+                control={control}
+                name="streetAddress"
+                id="streetAddress"
+                placeholder="Street Address"
+              />
+              <JustEnInput
+                control={control}
+                name="apt"
+                id="apt"
+                placeholder="Apt,suite,etc.(optional)"
+              />
+              <JustEnInput
+                control={control}
+                name="city"
+                id="city"
+                placeholder="City"
+              />
+              <JustEnInput
+                control={control}
+                name="state"
+                id="state"
+                placeholder="State / Province"
+              />
+              <JustEnInput
+                control={control}
+                name="zip"
+                id="zip"
+                placeholder="ZIP / Postal"
               />
             </div>
           </div>
