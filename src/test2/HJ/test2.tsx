@@ -1,46 +1,55 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PatientFormSchema, patientFormSchema } from "./test2Schema";
-import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  FieldPath,
+  Control,
+  Controller,
+} from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormLabel from "@mui/material/FormLabel";
+import JustEnInput from "./JustEnInput";
+import CustomSelect from "./CustomSelect";
+import JustNumInput from "./JustNumInput";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 
 function Test2HJ() {
   const {
     register,
-    handleSubmit,
+    getValues,
     watch,
+    handleSubmit,
+    control,
     formState: { errors },
   } = useForm<PatientFormSchema>({ resolver: zodResolver(patientFormSchema) });
-  console.log(watch("gender"));
 
-  const [BillableValue, setBillableValue] = useState<string>("Billable PPO");
-  const [medicareAdvantage, setMedicareAdvantage] = useState<string>("");
-  const [checkedLTC, setCheckedLTC] = useState<boolean>(false);
-  const [facility, setFacility] = useState<string>("");
+  const [isLTC, setIsLTC] = useState<boolean>(false);
   const [selectRoomNumber, setSelectRoomNumber] = useState<string>("");
-  const [clinicBranch, setClinicBranch] = useState<string>("");
-  const [suffix, setSuffix] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
-  const [language, setLanguage] = useState<string>("");
-  const [physician, setPhysician] = useState<string>("");
-  const [conditions, setConditions] = useState<string>("");
-  const [phoneType, setPhoneType] = useState<string>("");
-  const [relationship, setRelationship] = useState<string>("");
+  const [isValidationStatus, setIsValidationStatus] = useState({
+    ehrId: false,
+    email: false,
+    medicalNo: false,
+  });
+  const [disableEhrIdMessage, setDisableEhrIdMessage] = useState<boolean>(true);
+  const [disableEmailErrMessage, setDisableEmailErrMessage] =
+    useState<boolean>(true);
+  const [disabledMedicalNoErrMessage, setDisabledMedicalNoErrMessage] =
+    useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
+  const billableOption = ["Medicare PPO", "Medicare HMO"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
   const selectRoomNumberOption = ["Enter the Room No", "000", "123", "abc"];
   const clinicBranchOption = [
@@ -48,6 +57,7 @@ function Test2HJ() {
     "hicarenetBrance",
     "Text Hicare Branch",
   ];
+  const phoneTypeOption = ["Mobile", "Home", "Work"];
   const suffixOption = [
     "JR Junior",
     "SR Junior",
@@ -63,7 +73,6 @@ function Test2HJ() {
   const languageOption = ["English", "Spanish", "Korean"];
   const physicianOption = ["Testu, Ser", "Abx, Aaa", "Teee, St", "Hhh, H"];
   const conditionsOption = ["Alzheimer", "Bariatrics", "Cancer", "Dementia"];
-  const phoneTypeOption = ["Home", "Mobile", "Work", "Other"];
   const relationshipOption = [
     "Spouse",
     "Family Member",
@@ -71,115 +80,26 @@ function Test2HJ() {
     "Other relationship",
   ];
 
-  const handleChangeMedicareOption = (
-    event: SelectChangeEvent<typeof medicareAdvantage>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setMedicareAdvantage(value);
+  const ehrIdMockData = ["Asdf", "Qwer"];
+  const emailMockData = [
+    "asdf@naver.com",
+    "ysk30430@hicare.net",
+    "qwer@naver.com",
+  ];
+
+  const isAllTrue = Object.values(isValidationStatus).every(
+    (status) => status === true
+  );
+
+  const onSubmit: SubmitHandler<PatientFormSchema> = (data) => {
+    if (isAllTrue === true) {
+      console.log(data);
+    } else {
+      console.log("checking button");
+    }
   };
 
-  const handleChangeBill = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBillableValue(event.target.value);
-  };
-
-  const handleChangeLTC = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { checked },
-    } = event;
-    setCheckedLTC(checked);
-  };
-  const handleChangeFacility = (event: SelectChangeEvent<typeof facility>) => {
-    const {
-      target: { value },
-    } = event;
-    setFacility(value);
-    setSelectRoomNumber("");
-  };
-
-  const handleChangeSelectRoomNumber = (
-    event: SelectChangeEvent<typeof selectRoomNumber>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectRoomNumber(value);
-  };
-
-  const handleChangeClinicBranch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setClinicBranch(value);
-  };
-
-  const handleChangeSuffix = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setSuffix(value);
-  };
-
-  const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setGender(value);
-  };
-
-  const handleChangeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { value },
-    } = event;
-    setLanguage(value);
-  };
-
-  const handleChangePhysician = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setPhysician(value);
-  };
-
-  const handleChangeConditions = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setConditions(value);
-  };
-
-  const handleChangePhoneType = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setPhoneType(value);
-  };
-
-  const handleChangeRelationship = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      target: { value },
-    } = event;
-    setRelationship(value);
-  };
-  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const day = event.target.value.toString().split("-");
-    const formatDay = `${day[1]}/${day[2]}/${day[0]}`;
-    console.log(formatDay);
-  };
-
-  const onSubmit: SubmitHandler<PatientFormSchema> = (data) =>
-    console.log(data);
+  console.log(errors);
 
   return (
     <>
@@ -196,58 +116,162 @@ function Test2HJ() {
             <p>* required field</p>
           </div>
           <div>
-            <InputLabel htmlFor="medicareNumber">Medicare Number *</InputLabel>
-            <Input id="medicareNumber" type="text" />
-            <Button variant="contained">Medicare Check</Button>
-
-            <FormControl>
-              <FormLabel>Billable Option</FormLabel>
-              <RadioGroup value={BillableValue} onChange={handleChangeBill}>
-                <FormControlLabel
-                  value="Billable PPO"
-                  control={<Radio />}
-                  label="Billable PPO"
-                  // {...register("billableOption")}
+            <div style={{ display: "flex" }}>
+              <div>
+                <InputLabel htmlFor="medicareNumber">
+                  Medicare Number *
+                </InputLabel>
+                <Controller
+                  name="medicareNumber"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="medicareNumber"
+                      type="text"
+                      inputProps={{ maxLength: 13 }}
+                      onChange={(e) => {
+                        field.onChange(
+                          e.target.value
+                            .replace(/[^\dA-Za-z가-힣]/g, "")
+                            .replace(
+                              /^([\dA-Za-z가-힣]{0,3})([\dA-Za-z가-힣]{0,4})([\dA-Za-z가-힣]{0,4})$/,
+                              (_, a, b, c) => {
+                                const parts = [a, b, c];
+                                const filteredParts = parts.filter(
+                                  (part) => part !== ""
+                                );
+                                return filteredParts.join("-");
+                              }
+                            )
+                            .replace(/(-{1,2})$/, "")
+                        );
+                      }}
+                    />
+                  )}
                 />
-                <FormControlLabel
-                  value="Medicare HMO"
-                  control={<Radio />}
-                  label="Medicare HMO"
-                  // {...register("billableOption")}
+                <p style={{ color: "#ff0000" }}>
+                  {errors.medicareNumber?.message}
+                </p>
+              </div>
+              <div>
+                <InputLabel>Billable Option *</InputLabel>
+                <RadioGroup defaultValue={"Medicare PPO"} row>
+                  {billableOption.map((value, index) => (
+                    <FormControlLabel
+                      key={index}
+                      value={value}
+                      control={<Radio />}
+                      label={value}
+                      {...register("billableOption")}
+                    />
+                  ))}
+                </RadioGroup>
+              </div>
+              <div>
+                <InputLabel htmlFor="startDate">
+                  Effective Start Date
+                </InputLabel>
+                <Controller
+                  name="startDate"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="startDate"
+                      type="date"
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
                 />
-              </RadioGroup>
-            </FormControl>
+              </div>
 
-            <InputLabel htmlFor="startDate">Effective Start Date</InputLabel>
-            <Input id="startDate" type="date" />
+              <div>
+                <CustomSelect
+                  name="medicareAdvantage"
+                  label="Medicare Advantage"
+                  control={control}
+                  menuItems={medicareAdvantageOption}
+                />
+              </div>
 
-            <FormControl>
-              <Select
-                value={medicareAdvantage}
-                // {...register("medicareAdvantage")}
-                onChange={handleChangeMedicareOption}
-                input={<OutlinedInput />}
-              >
-                {medicareAdvantageOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <InputLabel htmlFor="medicareAdvantageGroupNumber">
-              Medicare Advantage group number
-            </InputLabel>
-            <Input id="medicareAdvantageGroupNumber" type="text" />
+              <div>
+                <div>
+                  <label htmlFor="MediAdGroupNo">
+                    Medicare Advantage group number
+                  </label>
+                  <JustEnInput
+                    control={control}
+                    name="MediAdGroupNo"
+                    id="MediAdGroupNo"
+                  />
+                </div>
 
-            <InputLabel htmlFor="medicareAdvantageIndividualNumber">
-              Medicare Advantage individual number
-            </InputLabel>
-            <Input id="medicareAdvantageIndividualNumber" type="text" />
+                <div>
+                  <label htmlFor="MediAdIndiNo">
+                    Medicare Advantage individual number
+                  </label>
+                  <JustEnInput
+                    control={control}
+                    name="MediAdIndiNo"
+                    id="MediAdIndiNo"
+                  />
+                </div>
 
-            <InputLabel htmlFor="medicalNumber">Medi-CAL Number</InputLabel>
-            <Input id="medicalNumber" type="text" />
-            <Button variant="contained">Medi-CAL Check</Button>
+                <FormControl>
+                  <label htmlFor="MediCALNo"> Medi-CAL Number</label>
+                  <div style={{ display: "flex" }}>
+                    <JustEnInput
+                      control={control}
+                      name="MediCALNo"
+                      id="MediCALNo"
+                    />
+                    <p style={{ color: "#ff0000" }}>
+                      {errors.MediCALNo?.message}
+                    </p>
+                    <Button
+                      variant="contained"
+                      sx={{ width: "150px", fontSize: "10px" }}
+                      onClick={() => {
+                        const value = getValues("MediCALNo");
+                        if (value === "") {
+                          setDisabledMedicalNoErrMessage(true);
+                          setIsValidationStatus((prevStatus) => ({
+                            ...prevStatus,
+                            medicalNo: false,
+                          }));
+                        } else {
+                          setIsValidationStatus((prevStatus) => ({
+                            ...prevStatus,
+                            medicalNo: true,
+                          }));
+                          setDisabledMedicalNoErrMessage(false);
+                        }
+                      }}
+                    >
+                      Medi-CAL Check
+                    </Button>
+
+                    {isValidationStatus.medicalNo === false ? (
+                      <p
+                        style={{
+                          color: "#ff0000",
+                          display: disabledMedicalNoErrMessage
+                            ? "none"
+                            : "block",
+                        }}
+                      >
+                        This account already exists
+                      </p>
+                    ) : null}
+                  </div>
+                </FormControl>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -259,254 +283,215 @@ function Test2HJ() {
             }}
           >
             <p>Patient profile</p>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox onChange={handleChangeLTC} />}
-                label="LTC"
-              />
-            </FormGroup>
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value={isLTC}
+                  onChange={(e) => setIsLTC(e.target.checked)}
+                />
+              }
+              label="LTC"
+            />
           </div>
-          {checkedLTC ? (
-            <>
-              <FormControl>
-                <InputLabel htmlFor="facility">Facility *</InputLabel>
-                <Select
-                  labelId="facility"
-                  value={facility}
-                  {...register("facility")}
-                  onChange={handleChangeFacility}
-                  displayEmpty
-                  renderValue={
-                    facility !== "" ? undefined : () => <p>Select...</p>
-                  }
-                >
-                  <MenuItem value="" disabled style={{ display: "none" }}>
-                    <p>select...</p>
-                  </MenuItem>
-                  {facilityOption.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+          {isLTC ? (
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={facilityOption}
+                name="facility"
+                label="Facility *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.facility?.message}</p>
+
+              <CustomSelect
+                menuItems={selectRoomNumberOption}
+                name="selectRoomNumber"
+                label="Room No *"
+                control={control}
+                itemValue={selectRoomNumber}
+              />
+              <p style={{ color: "#ff0000" }}>
+                {errors.selectRoomNumber?.message}
+              </p>
 
               <FormControl>
-                <InputLabel htmlFor="selectRoomNumber">Room No *</InputLabel>
-                <Select
-                  labelId="selectRoomNumber"
-                  value={selectRoomNumber}
-                  {...register("selectRoomNumber")}
-                  onChange={handleChangeSelectRoomNumber}
-                  displayEmpty
-                  renderValue={
-                    selectRoomNumber !== "" ? undefined : () => <p>Select...</p>
-                  }
-                >
-                  <MenuItem value="" disabled style={{ display: "none" }}>
-                    <p>select...</p>
-                  </MenuItem>
-                  {selectRoomNumberOption.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <label htmlFor="roomNumber">Room No *</label>
+                <Input
+                  id="roomNumber"
+                  type="text"
+                  {...register("roomNumber")}
+                />
+                <p style={{ color: "#ff0000" }}>{errors.roomNumber?.message}</p>
               </FormControl>
-              {selectRoomNumber == "Enter the Room No" ? (
-                <>
-                  <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
-                  <Input id="roomNumber" type="text" />
-                </>
-              ) : null}
-            </>
+            </div>
           ) : null}
 
-          <FormControl>
-            <InputLabel htmlFor="clinicBranch">Clinic branch</InputLabel>
-            <Select
-              labelId="clinicBranch"
-              value={clinicBranch}
-              {...register("clinicBranch")}
-              onChange={handleChangeClinicBranch}
-              displayEmpty
-              renderValue={
-                clinicBranch !== "" ? undefined : () => <p>Select...</p>
-              }
-            >
-              <MenuItem value="" disabled style={{ display: "none" }}>
-                <p>placeholder</p>
-              </MenuItem>
-              {clinicBranchOption.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <div>
-            <InputLabel htmlFor="lastName">
-              Last Name *
-              <TextField
-                variant="standard"
-                type="text"
-                id="lastName"
-                {...register("lastName")}
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={clinicBranchOption}
+                name="clinicBranch"
+                label="Clinic Branch *"
+                control={control}
               />
-            </InputLabel>
-            <InputLabel htmlFor="firstName">
-              First Name *
-              <TextField
-                variant="standard"
-                type="text"
-                id="firstName"
-                {...register("firstName")}
+              <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
+              <FormControl>
+                <label htmlFor="lastName">Last Name *</label>
+                <JustEnInput control={control} name="lastName" id="lastName" />
+                {errors.lastName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+              <FormControl>
+                <label htmlFor="firstName">First Name *</label>
+                <JustEnInput
+                  control={control}
+                  name="firstName"
+                  id="firstName"
+                />
+                {errors.firstName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+
+              <FormControl>
+                <label htmlFor="middleName">Middle Name</label>
+                <JustEnInput
+                  control={control}
+                  name="middleName"
+                  id="middleName"
+                />
+                {errors.firstName?.message ? (
+                  <FormHelperText style={{ color: "#ff0000" }}>
+                    This field is required.
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+              <CustomSelect
+                menuItems={suffixOption}
+                name="suffix"
+                label="Suffix"
+                control={control}
               />
-            </InputLabel>
-            <InputLabel htmlFor="middleName">
-              Middle Name
-              <TextField
-                variant="standard"
-                type="text"
-                id="middleName"
-                {...register("middleName")}
+            </div>
+            <div style={{ display: "flex" }}>
+              <CustomSelect
+                menuItems={genderOption}
+                name="gender"
+                label="Gender *"
+                control={control}
               />
-            </InputLabel>
+              <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
 
-            <FormControl>
-              <InputLabel htmlFor="suffix">Suffix</InputLabel>
-              <Select
-                labelId="suffix"
-                value={suffix}
-                {...register("suffix")}
-                onChange={handleChangeSuffix}
-                displayEmpty
-                renderValue={suffix !== "" ? undefined : () => <p>Select...</p>}
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>placeholder</p>
-                </MenuItem>
-                {suffixOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+              <div>
+                <InputLabel htmlFor="first">Date of Birth *</InputLabel>
+                <Controller
+                  name="birth"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="birth"
+                      type="date"
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+                <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
+              </div>
+              <div>
+                <InputLabel htmlFor="height"> Height</InputLabel>
+                <JustNumInput id="height" name="height" control={control} />
+              </div>
+              <CustomSelect
+                menuItems={languageOption}
+                name="language"
+                label="Primary Language"
+                control={control}
+              />
+            </div>
+            <div style={{ display: "flex" }}>
+              <FormControl>
+                <label htmlFor="ehrId">EHR ID</label>
+                <div style={{ display: "flex" }}>
+                  <JustEnInput control={control} name="ehrId" id="ehrId" />
+                  <p style={{ color: "#ff0000" }}>{errors.ehrId?.message}</p>
+                  <Button
+                    variant="contained"
+                    sx={{ width: "150px", fontSize: "10px" }}
+                    onClick={() => {
+                      const value = getValues("ehrId");
+                      if (value === "") {
+                        setDisableEhrIdMessage(true);
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: false,
+                        }));
+                      } else if (ehrIdMockData.includes(value)) {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: false,
+                        }));
+                        setDisableEhrIdMessage(false);
+                      } else {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: true,
+                        }));
+                        setDisableEhrIdMessage(true);
+                      }
+                    }}
+                  >
+                    EHR ID Check
+                  </Button>
 
-            <FormControl>
-              <InputLabel htmlFor="gender">Gender *</InputLabel>
-              <Select
-                labelId="gender"
-                value={gender}
-                {...register("gender")}
-                onChange={handleChangeGender}
-                displayEmpty
-                renderValue={gender !== "" ? undefined : () => <p>Select...</p>}
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {genderOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                  {isValidationStatus.ehrId === false ? (
+                    <p
+                      style={{
+                        color: "#ff0000",
+                        display: disableEhrIdMessage ? "none" : "block",
+                      }}
+                    >
+                      This account already exists
+                    </p>
+                  ) : null}
+                </div>
+              </FormControl>
 
-            <InputLabel htmlFor="birth">Date Of Birth</InputLabel>
-            <Input
-              id="birth"
-              type="date"
-              {...register("birth", { onChange: handleChangeDate })}
-            ></Input>
-
-            <InputLabel htmlFor="height">Height</InputLabel>
-            <Input id="height" type="text" {...register("height")}></Input>
-
-            <FormControl>
-              <InputLabel htmlFor="language">Primary Language</InputLabel>
-              <Select
-                labelId="language"
-                value={language}
-                {...register("language")}
-                onChange={handleChangeLanguage}
-                displayEmpty
-                renderValue={
-                  language !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {languageOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <InputLabel htmlFor="ehrId">EHR ID</InputLabel>
-            <Input id="ehrId" type="text" {...register("ehrId")} />
-            <Button variant="contained">EHR ID Check</Button>
-
-            <FormControl>
-              <InputLabel htmlFor="physician">Primary Physician *</InputLabel>
-              <Select
-                labelId="physician"
-                value={physician}
-                {...register("physician")}
-                onChange={handleChangePhysician}
-                displayEmpty
-                renderValue={
-                  physician !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {physicianOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <InputLabel htmlFor="patientMedication">
-              Patient Medication
-            </InputLabel>
-            <TextField
-              id="patientMedication"
-              variant="outlined"
-              {...register("patientMedication")}
-            />
-
-            <FormControl>
-              <InputLabel htmlFor="conditions">Conditions</InputLabel>
-              <Select
-                labelId="conditions"
-                value={conditions}
-                {...register("conditions")}
-                onChange={handleChangeConditions}
-                // input={<OutlinedInput label="physician" />}
-                displayEmpty
-                renderValue={
-                  conditions !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {conditionsOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+              <CustomSelect
+                menuItems={physicianOption}
+                name="primaryPhysician"
+                label="Primary Physician *"
+                control={control}
+              />
+              <p style={{ color: "#ff0000" }}>
+                {errors.primaryPhysician?.message}
+              </p>
+              <div>
+                <InputLabel htmlFor="patientMedication">
+                  Patient Medication
+                </InputLabel>
+                <TextField
+                  id="patientMedication"
+                  variant="outlined"
+                  {...register("patientMedication")}
+                />
+              </div>
+              <CustomSelect
+                menuItems={conditionsOption}
+                name="conditions"
+                label="Conditions"
+                control={control}
+              />
+            </div>
           </div>
         </section>
 
@@ -521,91 +506,167 @@ function Test2HJ() {
           </div>
 
           <div>
-            <FormControl>
-              <InputLabel htmlFor="phoneType">Phone Type *</InputLabel>
-              <Select
-                labelId="phoneType"
-                value={phoneType}
-                // {...register("medicareAdvantage")}
-                onChange={handleChangePhoneType}
-                // input={<OutlinedInput label="phoneType" />}
-                displayEmpty
-                renderValue={
-                  phoneType !== "" ? undefined : () => <p>Select...</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {phoneTypeOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <InputLabel htmlFor="phoneNumber">Phone Number *</InputLabel>
-            <Input id="phoneNumber" type="text"></Input>
-            <Button variant="contained">Phone Check</Button>
-
-            <FormGroup>
-              <InputLabel htmlFor="email">Email Address *</InputLabel>
-              <Input id="email" type="email"></Input>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="patient does not have email"
+            <div>
+              <CustomSelect
+                menuItems={phoneTypeOption}
+                name="phoneType"
+                label="Phone Type *"
+                control={control}
               />
-              <Button variant="contained">Email Check</Button>
-            </FormGroup>
-
-            <InputLabel htmlFor="emergencyContacts">
-              Emergency Contacts
-            </InputLabel>
-            <Input id="emergencyContacts" placeholder="Name(last)" />
-            <Input id="emergencyContacts" placeholder="Name(first)" />
-            <Input id="emergencyContacts" placeholder="Name(middle)" />
-
-            <FormControl>
-              <Select
-                labelId="relationship"
-                value={relationship}
-                // {...register("relationship")}
-                onChange={handleChangeRelationship}
-                // input={<OutlinedInput label="relationship" />}
-                displayEmpty
-                renderValue={
-                  relationship !== "" ? undefined : () => <p>Relationship</p>
-                }
-              >
-                <MenuItem value="" disabled style={{ display: "none" }}>
-                  <p>Select...</p>
-                </MenuItem>
-                {relationshipOption.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <Input id="relationship" placeholder="Contact Number"></Input>
-
-            <InputLabel htmlFor="streetAddress">Street Address</InputLabel>
-            <Input id="streetAddress" />
-            <InputLabel htmlFor="apt">Apt, suite, etc.(optional)</InputLabel>
-            <Input id="apt" />
-            <InputLabel htmlFor="city">City</InputLabel>
-            <Input id="city" />
-            <InputLabel htmlFor="state">State / Province</InputLabel>
-            <Input id="state" />
-            <InputLabel htmlFor="zip">ZIP / Postal</InputLabel>
-            <Input id="zip" />
+            </div>
+            <div style={{ display: "flex" }}>
+              <InputLabel htmlFor="phone">phone *</InputLabel>
+              <Controller
+                name="phone"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="phone"
+                    type="text"
+                    inputProps={{ maxLength: 13 }}
+                    onChange={(e) => {
+                      field.onChange(
+                        e.target.value
+                          .replace(/[^\d]/g, "")
+                          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                          .replace(/(-{1,2})$/g, "")
+                      );
+                    }}
+                  />
+                )}
+              />
+              <p style={{ color: "#ff0000" }}>{errors.phone?.message}</p>
+              <InputLabel htmlFor="email">Email Address *</InputLabel>
+              <div style={{ display: "flex" }}>
+                <Input id="email" type="text" {...register("email")} />
+                <p style={{ color: "#ff0000" }}>{errors.email?.message}</p>
+                <Button
+                  variant="contained"
+                  sx={{ width: "150px", fontSize: "10px" }}
+                  onClick={() => {
+                    const value = getValues("email");
+                    if (value === "") {
+                      setDisableEmailErrMessage(true);
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: false,
+                      }));
+                    } else if (emailMockData.includes(value)) {
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: false,
+                      }));
+                      setDisableEmailErrMessage(false);
+                    } else {
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: true,
+                      }));
+                      setDisableEmailErrMessage(true);
+                    }
+                  }}
+                >
+                  Email Check
+                </Button>
+                {isValidationStatus.email === false ? (
+                  <p
+                    style={{
+                      color: "#ff0000",
+                      display: disableEmailErrMessage ? "none" : "block",
+                    }}
+                  >
+                    This account already exists
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div>
+              <label htmlFor="emergencyContacts">Emergency Contacts</label>
+              <JustEnInput
+                control={control}
+                name="emergencyContactsLast"
+                id="emergencyContacts"
+                placeholder="Name(last)"
+              />
+              <JustEnInput
+                control={control}
+                name="emergencyContactsFirst"
+                id="emergencyContactsFirst"
+                placeholder="Name(first)"
+              />
+              <JustEnInput
+                control={control}
+                name="emergencyContactsMiddle"
+                id="emergencyContactsMiddle"
+                placeholder="Name(middle)"
+              />
+              <div>
+                <CustomSelect
+                  menuItems={relationshipOption}
+                  name="relationship"
+                  control={control}
+                  label="relationship"
+                />
+              </div>
+              <Controller
+                name="contactNumber"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    id="contactNumber"
+                    type="text"
+                    placeholder="Contact Number"
+                    onChange={(e) => {
+                      field.onChange(
+                        e.target.value
+                          .replace(/[^\d]/g, "")
+                          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+                          .replace(/(-{1,2})$/g, "")
+                      );
+                    }}
+                  />
+                )}
+              />
+              <JustEnInput
+                control={control}
+                name="streetAddress"
+                id="streetAddress"
+                placeholder="Street Address"
+              />
+              <JustEnInput
+                control={control}
+                name="apt"
+                id="apt"
+                placeholder="Apt,suite,etc.(optional)"
+              />
+              <JustEnInput
+                control={control}
+                name="city"
+                id="city"
+                placeholder="City"
+              />
+              <JustEnInput
+                control={control}
+                name="state"
+                id="state"
+                placeholder="State / Province"
+              />
+              <JustEnInput
+                control={control}
+                name="zip"
+                id="zip"
+                placeholder="ZIP / Postal"
+              />
+            </div>
           </div>
-          <Button variant="contained" type="submit">
-            Save
-          </Button>
         </section>
+        <Button variant="contained" type="submit">
+          Save
+        </Button>
       </form>
     </>
   );

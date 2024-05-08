@@ -1,48 +1,64 @@
 import { z } from "zod";
 
-// 핸드폰 번호 유효성 검사 정규식 ( 0으로 시작해야 하고 2-3자리 숫자 , 두번째 입력은 3-4자리 0~9 숫자, 세번째 입력은 4자리 0~9 숫자)
-const phoneRegex = /^0\d{1,3}-?([0-9]{3,4})-?([0-9]{4})$/;
-const onlyAlphabetRegex = /^[a-zA-Z]+$/;
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === z.ZodIssueCode.invalid_string) {
+    return { message: "This field is required." };
+  }
+  if (issue.code === z.ZodIssueCode.too_small) {
+    return { message: "This field is required." };
+  }
+  if (issue.code === z.ZodIssueCode.invalid_type) {
+    return { message: "Please format correctly" };
+  }
+  return { message: ctx.defaultError };
+};
+
+z.setErrorMap(customErrorMap);
+z.string({ errorMap: customErrorMap });
 
 export const patientFormSchema = z.object({
-  phone: z
-    .string()
-    .regex(phoneRegex, "핸드폰 번호 형식이 아닙니다.")
-    .min(9, {
-      message: "0으로 시작하는 최소 9자리 이상의 숫자를 입력해주세요.",
-    })
-    .max(11, { message: "11자리 이하로 입력해주세요." }),
-
+  medicareNumber: z.string().min(1),
   billableOption: z.string(),
-  medicareAdvantage: z.string().min(2),
-  facility: z.string({ message: "This field is required." }).min(1),
-  selectRoomNumber: z.string({ message: "This field is required." }).min(1),
-  clinicBranch: z.string().min(1, { message: "This field is required." }),
-  lastName: z
-    .string({ message: "This field is required." })
-    .min(1)
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
-  firstName: z
-    .string({ message: "This field is required." })
-    .min(1)
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." }),
-  middleName: z
-    .string()
-    .regex(onlyAlphabetRegex, { message: "영문자만 입력해주세요." })
-    .min(1)
-    .optional(),
+  startDate: z.string(),
+  medicareAdvantage: z.string(),
+  MediAdGroupNo: z.string(),
+  MediAdIndiNo: z.string(),
+  MediCALNo: z.string(),
+  facility: z.string().min(1),
+  selectRoomNumber: z.string().min(1),
+  roomNumber: z.string().min(1),
+  clinicBranch: z.string().min(1),
+  lastName: z.string().min(1),
+  firstName: z.string().min(1),
+  middleName: z.string().optional(),
   suffix: z.string().optional(),
-  gender: z.string({ message: "This field is required." }),
-  birth: z.string({ message: "This field is required." }),
-  height: z.number({ message: "height must be a number." }).optional(),
+  gender: z.string().min(1),
+  birth: z.string().date(),
+  height: z.string().optional(),
   language: z.string().optional(),
   primaryLanguage: z.string().optional(),
-  ehrId: z.string({ message: "This field is required." }).min(1),
-  physician: z.string({ message: "This field is required." }).min(1),
-  dxCode: z.string({ message: "This field is required." }).min(1),
-  primaryPhysician: z.string({ message: "This field is required." }).min(1),
+  ehrId: z.string({
+    required_error: "This field is required",
+  }),
+  primaryPhysician: z.string().min(1),
   patientMedication: z.string().optional(),
   conditions: z.string().optional(),
+  phoneType: z.string(),
+  phone: z.string().optional(),
+  email: z
+    .string()
+    .min(1, { message: "This field is required" })
+    .email({ message: "이메일 형식을 맞춰주세요" }),
+  emergencyContactsLast: z.string().optional(),
+  emergencyContactsFirst: z.string().optional(),
+  emergencyContactsMiddle: z.string().optional(),
+  relationship: z.string().optional(),
+  contactNumber: z.string().optional(),
+  streetAddress: z.string().optional(),
+  apt: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zip: z.string().optional(),
 });
 
 export type PatientFormSchema = z.infer<typeof patientFormSchema>;
