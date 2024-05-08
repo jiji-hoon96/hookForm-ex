@@ -40,9 +40,12 @@ function Test2HJ() {
   const [isValidationStatus, setIsValidationStatus] = useState({
     ehrId: false,
     email: false,
+    medicalNo: false,
   });
   const [disableEhrIdMessage, setDisableEhrIdMessage] = useState<boolean>(true);
   const [disableEmailErrMessage, setDisableEmailErrMessage] =
+    useState<boolean>(true);
+  const [disabledMedicalNoErrMessage, setDisabledMedicalNoErrMessage] =
     useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
@@ -113,52 +116,161 @@ function Test2HJ() {
             <p>* required field</p>
           </div>
           <div>
-            <InputLabel htmlFor="medicareNumber">Medicare Number *</InputLabel>
-            <Controller
-              name="medicareNumber"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="medicareNumber"
-                  type="text"
-                  inputProps={{ maxLength: 13 }}
-                  onChange={(e) => {
-                    field.onChange(
-                      e.target.value
-                        .replace(/[^\dA-Za-z가-힣]/g, "")
-                        .replace(
-                          /^([\dA-Za-z가-힣]{0,3})([\dA-Za-z가-힣]{0,4})([\dA-Za-z가-힣]{0,4})$/,
-                          (_, a, b, c) => {
-                            const parts = [a, b, c];
-                            const filteredParts = parts.filter(
-                              (part) => part !== ""
-                            );
-                            return filteredParts.join("-");
-                          }
-                        )
-                        .replace(/(-{1,2})$/, "")
-                    );
-                  }}
+            <div style={{ display: "flex" }}>
+              <div>
+                <InputLabel htmlFor="medicareNumber">
+                  Medicare Number *
+                </InputLabel>
+                <Controller
+                  name="medicareNumber"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="medicareNumber"
+                      type="text"
+                      inputProps={{ maxLength: 13 }}
+                      onChange={(e) => {
+                        field.onChange(
+                          e.target.value
+                            .replace(/[^\dA-Za-z가-힣]/g, "")
+                            .replace(
+                              /^([\dA-Za-z가-힣]{0,3})([\dA-Za-z가-힣]{0,4})([\dA-Za-z가-힣]{0,4})$/,
+                              (_, a, b, c) => {
+                                const parts = [a, b, c];
+                                const filteredParts = parts.filter(
+                                  (part) => part !== ""
+                                );
+                                return filteredParts.join("-");
+                              }
+                            )
+                            .replace(/(-{1,2})$/, "")
+                        );
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />
-            <p style={{ color: "#ff0000" }}>{errors.medicareNumber?.message}</p>
+                <p style={{ color: "#ff0000" }}>
+                  {errors.medicareNumber?.message}
+                </p>
+              </div>
+              <div>
+                <InputLabel>Billable Option *</InputLabel>
+                <RadioGroup defaultValue={"Medicare PPO"} row>
+                  {billableOption.map((value, index) => (
+                    <FormControlLabel
+                      key={index}
+                      value={value}
+                      control={<Radio />}
+                      label={value}
+                      {...register("billableOption")}
+                    />
+                  ))}
+                </RadioGroup>
+              </div>
+              <div>
+                <InputLabel htmlFor="startDate">
+                  Effective Start Date
+                </InputLabel>
+                <Controller
+                  name="startDate"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="startDate"
+                      type="date"
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+              </div>
 
-            <div>
-              <InputLabel>Billable Option *</InputLabel>
-              <RadioGroup defaultValue={"Medicare PPO"} row>
-                {billableOption.map((value, index) => (
-                  <FormControlLabel
-                    key={index}
-                    value={value}
-                    control={<Radio />}
-                    label={value}
-                    {...register("billableOption")}
+              <div>
+                <CustomSelect
+                  name="medicareAdvantage"
+                  label="Medicare Advantage"
+                  control={control}
+                  menuItems={medicareAdvantageOption}
+                />
+              </div>
+
+              <div>
+                <div>
+                  <label htmlFor="MediAdGroupNo">
+                    Medicare Advantage group number
+                  </label>
+                  <JustEnInput
+                    control={control}
+                    name="MediAdGroupNo"
+                    id="MediAdGroupNo"
                   />
-                ))}
-              </RadioGroup>
+                </div>
+
+                <div>
+                  <label htmlFor="MediAdIndiNo">
+                    Medicare Advantage individual number
+                  </label>
+                  <JustEnInput
+                    control={control}
+                    name="MediAdIndiNo"
+                    id="MediAdIndiNo"
+                  />
+                </div>
+
+                <FormControl>
+                  <label htmlFor="MediCALNo"> Medi-CAL Number</label>
+                  <div style={{ display: "flex" }}>
+                    <JustEnInput
+                      control={control}
+                      name="MediCALNo"
+                      id="MediCALNo"
+                    />
+                    <p style={{ color: "#ff0000" }}>
+                      {errors.MediCALNo?.message}
+                    </p>
+                    <Button
+                      variant="contained"
+                      sx={{ width: "150px", fontSize: "10px" }}
+                      onClick={() => {
+                        const value = getValues("MediCALNo");
+                        if (value === "") {
+                          setDisabledMedicalNoErrMessage(true);
+                          setIsValidationStatus((prevStatus) => ({
+                            ...prevStatus,
+                            medicalNo: false,
+                          }));
+                        } else {
+                          setIsValidationStatus((prevStatus) => ({
+                            ...prevStatus,
+                            medicalNo: true,
+                          }));
+                          setDisabledMedicalNoErrMessage(false);
+                        }
+                      }}
+                    >
+                      Medi-CAL Check
+                    </Button>
+
+                    {isValidationStatus.medicalNo === false ? (
+                      <p
+                        style={{
+                          color: "#ff0000",
+                          display: disabledMedicalNoErrMessage
+                            ? "none"
+                            : "block",
+                        }}
+                      >
+                        This account already exists
+                      </p>
+                    ) : null}
+                  </div>
+                </FormControl>
+              </div>
             </div>
           </div>
         </section>
@@ -276,26 +388,29 @@ function Test2HJ() {
               />
               <p style={{ color: "#ff0000" }}>{errors.gender?.message}</p>
 
-              <InputLabel htmlFor="birth">Date of Birth *</InputLabel>
-              <Controller
-                name="birth"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    id="birth"
-                    type="date"
-                    onChange={(e) => {
-                      field.onChange(e.target.value);
-                    }}
-                  />
-                )}
-              />
-              <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
-
-              <InputLabel htmlFor="height"> Height</InputLabel>
-              <JustNumInput id="height" name="height" control={control} />
+              <div>
+                <InputLabel htmlFor="first">Date of Birth *</InputLabel>
+                <Controller
+                  name="birth"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="birth"
+                      type="date"
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+                <p style={{ color: "#ff0000" }}>{errors.birth?.message}</p>
+              </div>
+              <div>
+                <InputLabel htmlFor="height"> Height</InputLabel>
+                <JustNumInput id="height" name="height" control={control} />
+              </div>
               <CustomSelect
                 menuItems={languageOption}
                 name="language"
@@ -360,14 +475,16 @@ function Test2HJ() {
               <p style={{ color: "#ff0000" }}>
                 {errors.primaryPhysician?.message}
               </p>
-              <InputLabel htmlFor="patientMedication">
-                Patient Medication
-              </InputLabel>
-              <TextField
-                id="patientMedication"
-                variant="outlined"
-                {...register("patientMedication")}
-              />
+              <div>
+                <InputLabel htmlFor="patientMedication">
+                  Patient Medication
+                </InputLabel>
+                <TextField
+                  id="patientMedication"
+                  variant="outlined"
+                  {...register("patientMedication")}
+                />
+              </div>
               <CustomSelect
                 menuItems={conditionsOption}
                 name="conditions"
