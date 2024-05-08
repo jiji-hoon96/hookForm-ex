@@ -83,10 +83,6 @@ function Test2HJ() {
     "qwer@naver.com",
   ];
 
-  const handleCheckValidation = () => {
-    console.log("");
-  };
-
   const isAllTrue = Object.values(isValidationStatus).every(
     (status) => status === true
   );
@@ -130,7 +126,7 @@ function Test2HJ() {
                   onChange={(e) => {
                     field.onChange(
                       e.target.value
-                        .replace(/[^\dA-Za-z가-힣]/g, "") // 숫자, 영어, 한글 이외의 문자 제거
+                        .replace(/[^\dA-Za-z가-힣]/g, "")
                         .replace(
                           /^([\dA-Za-z가-힣]{0,3})([\dA-Za-z가-힣]{0,4})([\dA-Za-z가-힣]{0,4})$/,
                           (_, a, b, c) => {
@@ -148,22 +144,31 @@ function Test2HJ() {
               )}
             />
             <p style={{ color: "#ff0000" }}>{errors.medicareNumber?.message}</p>
+
             <FormControl>
               <FormLabel>Billable Option</FormLabel>
-              <RadioGroup>
-                <FormControlLabel
-                  value="Billable PPO"
-                  control={<Radio defaultChecked />}
-                  label="Billable PPO"
-                  {...register("billableOption")}
-                />
-                <FormControlLabel
-                  value="Medicare HMO"
-                  control={<Radio />}
-                  label="Medicare HMO"
-                  {...register("billableOption")}
-                />
-              </RadioGroup>
+              <Controller
+                name="billableOptionPPO"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    control={<Radio defaultChecked />}
+                    label="Medicare PPO"
+                  />
+                )}
+              />
+              <Controller
+                name="billableOptionHMO"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    control={<Radio />}
+                    label="Medicare HMO"
+                  />
+                )}
+              />
             </FormControl>
           </div>
         </section>
@@ -229,7 +234,6 @@ function Test2HJ() {
                 control={control}
               />
               <p style={{ color: "#ff0000" }}>{errors.clinicBranch?.message}</p>
-
               <FormControl>
                 <label htmlFor="lastName">Last Name *</label>
                 <JustEnInput control={control} name="lastName" id="lastName" />
@@ -252,6 +256,7 @@ function Test2HJ() {
                   </FormHelperText>
                 ) : null}
               </FormControl>
+
               <FormControl>
                 <label htmlFor="middleName">Middle Name</label>
                 <JustEnInput
@@ -265,7 +270,6 @@ function Test2HJ() {
                   </FormHelperText>
                 ) : null}
               </FormControl>
-
               <CustomSelect
                 menuItems={suffixOption}
                 name="suffix"
