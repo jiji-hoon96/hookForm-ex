@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import {
   Radio,
   FormControlLabel,
@@ -35,36 +35,29 @@ const ConditionValue = ["box1", "box2", "box3"];
 const PhoneTypeValue = ["Home", "Work", "Mobile"];
 const RelationshipValue = ["box1", "box2", "box3"];
 
-const MaskedTextField = ({ control, errors, register, name, label, mask }) => {
-  return (
-    <div>
-      <InputLabel>{label}</InputLabel>
-      <Controller
-        name={name}
-        control={control}
-        // defaultValue=''
-        render={({ field: { ref, ...field } }) => (
-          <TextField
-            {...field}
-            variant='standard'
-            helperText={errors[name]?.message}
-            FormHelperTextProps={{ sx: { color: "red" } }}
-            InputProps={{
-              inputComponent: IMaskInput,
-              inputProps: {
-                mask: mask,
-                unmask: true,
-                lazy: false,
-                inputRef: ref,
-                Component: "input",
-              },
-            }}
-          />
-        )}
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const TextMaskCustom = forwardRef<HTMLInputElement, CustomProps>(
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask='0000-000-0000'
+        placeholder='____-___-____'
+        lazy={false}
+        inputRef={ref}
+        onAccept={(value: string) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
       />
-    </div>
-  );
-};
+    );
+  }
+);
 
 function Test2EH() {
   const [isMedicareValid, setIsMedicareValid] = useState(false);
@@ -138,14 +131,18 @@ function Test2EH() {
       </section>
 
       <section style={{ display: "flex" }}>
-        <div style={{ display: "flex" }}>
-          <MaskedTextField
-            control={control}
-            errors={errors}
-            register={register}
-            name='medicareNumber'
-            label='Medicare Number*'
-            mask='0000-000-0000'
+        <div>
+          <InputLabel>Medicare Number*</InputLabel>
+          <TextField
+            variant='standard'
+            InputProps={{
+              inputComponent: TextMaskCustom as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+            }}
+            helperText={errors.medicareNumber?.message}
+            FormHelperTextProps={{ sx: { color: "red" } }}
+            {...register("medicareNumber")}
           />
 
           <Button
