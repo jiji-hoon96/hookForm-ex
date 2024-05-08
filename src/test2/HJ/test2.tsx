@@ -46,6 +46,7 @@ function Test2HJ() {
     useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
+  const billableOption = ["Medicare PPO", "Medicare HMO"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
   const selectRoomNumberOption = ["Enter the Room No", "000", "123", "abc"];
   const clinicBranchOption = [
@@ -145,31 +146,20 @@ function Test2HJ() {
             />
             <p style={{ color: "#ff0000" }}>{errors.medicareNumber?.message}</p>
 
-            <FormControl>
-              <FormLabel>Billable Option</FormLabel>
-              <Controller
-                name="billableOptionPPO"
-                control={control}
-                render={({ field }) => (
+            <div>
+              <InputLabel>Billable Option *</InputLabel>
+              <RadioGroup defaultValue={"Medicare PPO"} row>
+                {billableOption.map((value, index) => (
                   <FormControlLabel
-                    {...field}
-                    control={<Radio defaultChecked />}
-                    label="Medicare PPO"
-                  />
-                )}
-              />
-              <Controller
-                name="billableOptionHMO"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    {...field}
+                    key={index}
+                    value={value}
                     control={<Radio />}
-                    label="Medicare HMO"
+                    label={value}
+                    {...register("billableOption")}
                   />
-                )}
-              />
-            </FormControl>
+                ))}
+              </RadioGroup>
+            </div>
           </div>
         </section>
 
