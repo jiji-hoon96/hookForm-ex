@@ -3,19 +3,15 @@ import { z } from "zod";
 export type InsuranceSchemaType = z.infer<typeof insuranceSchema>;
 
 export const insuranceSchema = z.object({
-  medicareNumber: z.string().min(1, "This field is required."),
+  medicareNumber: z.string().min(1, "This field is required.").optional(),
 
-  emailAddress: z.string().min(1, "This field is required.").email(),
+  billableOption: z.enum(["Medicare PPO", "Medicare HMO"]),
 
-  height: z.string(),
+  date: z.string().date().optional(),
 
-  date: z.string().date(),
-
-  billableOption: z.enum(["Medicare PPO", "Medicare HMO"], {}),
-
-  medicareAdvantage: z.enum(["box1", "box2", "box3", "defaultValue"], {
-    required_error: "This field is required.",
-  }),
+  medicareAdvantage: z
+    .enum(["box1", "box2", "box3", "defaultValue"])
+    .optional(),
 
   facility: z.enum(["box1", "box2", "box3"], {
     message: "This field is required.",
@@ -33,15 +29,19 @@ export const insuranceSchema = z.object({
 
   firstName: z.string().min(1, "This field is required."),
 
-  suffix: z.enum(["box1", "box2", "box3", "defaultValue"]),
+  suffix: z.enum(["box1", "box2", "box3", "defaultValue"]).optional(),
 
   gender: z.enum(["male", "female", "X"], {
     message: "This field is required.",
   }),
 
-  ehrID: z.string().min(1, "This field is required."),
+  height: z.string().min(111, "Input in the range from 1’11”~8’11").optional(),
 
-  primaryLanguage: z.enum(["Korean", "English", "Spanish", "defaultValue"]),
+  primaryLanguage: z
+    .enum(["Korean", "English", "Spanish", "defaultValue"])
+    .optional(),
+
+  ehrID: z.string().min(1, "This field is required."),
 
   dXCode: z.enum(["box1", "box2", "box3"], {
     message: "This field is required.",
@@ -51,11 +51,13 @@ export const insuranceSchema = z.object({
     message: "This field is required.",
   }),
 
-  conditions: z.enum(["box1", "box2", "box3", "defaultValue"]),
+  conditions: z.enum(["box1", "box2", "box3", "defaultValue"]).optional(),
 
   phoneType: z.enum(["Home", "Work", "Mobile"], {
     message: "This field is required.",
   }),
 
   phoneNumber: z.string().min(1, "This field is required."),
+
+  emailAddress: z.string().min(1, "This field is required.").email(),
 });
