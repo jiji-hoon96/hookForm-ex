@@ -42,6 +42,7 @@ function Test2HJ() {
     ehrId: false,
     email: false,
   });
+  const [disable, setDisable] = useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
@@ -73,6 +74,8 @@ function Test2HJ() {
     "Other Relative",
     "Other relationship",
   ];
+
+  const ehrIdMockData = ["Asdf", "Qwer"];
 
   const handleCheckValidation = () => {
     console.log("");
@@ -322,23 +325,39 @@ function Test2HJ() {
                     sx={{ width: "150px", fontSize: "10px" }}
                     onClick={() => {
                       const value = getValues("ehrId");
-                      if (value.length >= 1) {
-                        setIsValidationStatus((prevStatus) => ({
-                          ...prevStatus,
-                          ehrId: true,
-                        }));
-                      } else {
+                      if (value === "") {
+                        setDisable(true);
                         setIsValidationStatus((prevStatus) => ({
                           ...prevStatus,
                           ehrId: false,
                         }));
+                      } else if (ehrIdMockData.includes(value)) {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: false,
+                        }));
+                        setDisable(false);
+                      } else {
+                        setIsValidationStatus((prevStatus) => ({
+                          ...prevStatus,
+                          ehrId: true,
+                        }));
+                        setDisable(true);
                       }
                     }}
                   >
                     EHR ID Check
                   </Button>
+
                   {isValidationStatus.ehrId === false ? (
-                    <p style={{ color: "#ff0000" }}>checking button</p>
+                    <p
+                      style={{
+                        color: "#ff0000",
+                        display: disable ? "none" : "block",
+                      }}
+                    >
+                      This account already exists
+                    </p>
                   ) : null}
                 </div>
               </FormControl>
