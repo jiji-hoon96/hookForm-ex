@@ -11,7 +11,6 @@ import {
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
@@ -42,7 +41,9 @@ function Test2HJ() {
     ehrId: false,
     email: false,
   });
-  const [disable, setDisable] = useState<boolean>(true);
+  const [disableEhrIdMessage, setDisableEhrIdMessage] = useState<boolean>(true);
+  const [disableEmailErrMessage, setDisableEmailErrmessage] =
+    useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
   const facilityOption = ["the one of my world", "facilityT", "bbb", "test"];
@@ -76,6 +77,11 @@ function Test2HJ() {
   ];
 
   const ehrIdMockData = ["Asdf", "Qwer"];
+  const emailMockData = [
+    "asdf@naver.com",
+    "ysk30430@hicare.net",
+    "qwer@naver.com",
+  ];
 
   const handleCheckValidation = () => {
     console.log("");
@@ -200,19 +206,7 @@ function Test2HJ() {
               <p style={{ color: "#ff0000" }}>
                 {errors.selectRoomNumber?.message}
               </p>
-              {/* {selectRoomNumber == "Enter the Room No" ? (
-                <>
-                  <InputLabel htmlFor="roomNumber">Room No *</InputLabel>
-                  <Input
-                    id="roomNumber"
-                    type="text"
-                    {...register("roomNumber")}
-                  />
-                  <p style={{ color: "#ff0000" }}>
-                    {errors.roomNumber?.message}
-                  </p>
-                </>
-              ) : null} */}
+
               <FormControl>
                 <label htmlFor="roomNumber">Room No *</label>
                 <Input
@@ -326,7 +320,7 @@ function Test2HJ() {
                     onClick={() => {
                       const value = getValues("ehrId");
                       if (value === "") {
-                        setDisable(true);
+                        setDisableEhrIdMessage(true);
                         setIsValidationStatus((prevStatus) => ({
                           ...prevStatus,
                           ehrId: false,
@@ -336,13 +330,13 @@ function Test2HJ() {
                           ...prevStatus,
                           ehrId: false,
                         }));
-                        setDisable(false);
+                        setDisableEhrIdMessage(false);
                       } else {
                         setIsValidationStatus((prevStatus) => ({
                           ...prevStatus,
                           ehrId: true,
                         }));
-                        setDisable(true);
+                        setDisableEhrIdMessage(true);
                       }
                     }}
                   >
@@ -353,7 +347,7 @@ function Test2HJ() {
                     <p
                       style={{
                         color: "#ff0000",
-                        display: disable ? "none" : "block",
+                        display: disableEhrIdMessage ? "none" : "block",
                       }}
                     >
                       This account already exists
@@ -432,21 +426,38 @@ function Test2HJ() {
                   sx={{ width: "150px", fontSize: "10px" }}
                   onClick={() => {
                     const value = getValues("email");
-                    const emailRegex =
-                      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-                    const isEmailValid = emailRegex.test(value);
-                    if (isEmailValid === true) {
+                    if (value === "") {
+                      setDisableEmailErrmessage(true);
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: false,
+                      }));
+                    } else if (emailMockData.includes(value)) {
+                      setIsValidationStatus((prevStatus) => ({
+                        ...prevStatus,
+                        email: false,
+                      }));
+                      setDisableEmailErrmessage(false);
+                    } else {
                       setIsValidationStatus((prevStatus) => ({
                         ...prevStatus,
                         email: true,
                       }));
+                      setDisableEmailErrmessage(true);
                     }
                   }}
                 >
                   Email Check
                 </Button>
                 {isValidationStatus.email === false ? (
-                  <p style={{ color: "#ff0000" }}>checking button</p>
+                  <p
+                    style={{
+                      color: "#ff0000",
+                      display: disableEmailErrMessage ? "none" : "block",
+                    }}
+                  >
+                    This account already exists
+                  </p>
                 ) : null}
               </div>
             </div>
