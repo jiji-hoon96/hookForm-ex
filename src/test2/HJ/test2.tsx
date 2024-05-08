@@ -42,7 +42,7 @@ function Test2HJ() {
     email: false,
   });
   const [disableEhrIdMessage, setDisableEhrIdMessage] = useState<boolean>(true);
-  const [disableEmailErrMessage, setDisableEmailErrmessage] =
+  const [disableEmailErrMessage, setDisableEmailErrMessage] =
     useState<boolean>(true);
 
   const medicareAdvantageOption = ["Clover", "HealthNet", "Unicare"];
@@ -126,6 +126,7 @@ function Test2HJ() {
                   {...field}
                   id="medicareNumber"
                   type="text"
+                  inputProps={{ maxLength: 13 }}
                   onChange={(e) => {
                     field.onChange(
                       e.target.value
@@ -405,6 +406,7 @@ function Test2HJ() {
                     {...field}
                     id="phone"
                     type="text"
+                    inputProps={{ maxLength: 13 }}
                     onChange={(e) => {
                       field.onChange(
                         e.target.value
@@ -427,7 +429,7 @@ function Test2HJ() {
                   onClick={() => {
                     const value = getValues("email");
                     if (value === "") {
-                      setDisableEmailErrmessage(true);
+                      setDisableEmailErrMessage(true);
                       setIsValidationStatus((prevStatus) => ({
                         ...prevStatus,
                         email: false,
@@ -437,13 +439,13 @@ function Test2HJ() {
                         ...prevStatus,
                         email: false,
                       }));
-                      setDisableEmailErrmessage(false);
+                      setDisableEmailErrMessage(false);
                     } else {
                       setIsValidationStatus((prevStatus) => ({
                         ...prevStatus,
                         email: true,
                       }));
-                      setDisableEmailErrmessage(true);
+                      setDisableEmailErrMessage(true);
                     }
                   }}
                 >
