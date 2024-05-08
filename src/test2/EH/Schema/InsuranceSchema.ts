@@ -35,7 +35,7 @@ export const insuranceSchema = z.object({
     message: "This field is required.",
   }),
 
-  height: z.string().optional(),
+  height: z.string().min(111, "Input in the range from 1’11”~8’11").optional(),
 
   primaryLanguage: z
     .enum(["Korean", "English", "Spanish", "defaultValue"])

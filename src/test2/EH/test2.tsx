@@ -59,6 +59,26 @@ const TextMaskCustom = forwardRef<HTMLInputElement, CustomProps>(
   }
 );
 
+const HeightMask = forwardRef<HTMLInputElement, CustomProps>(
+  function HeightMask(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="0'   00''"
+        placeholder="0'   00''"
+        placeholderChar='0'
+        lazy={false}
+        inputRef={ref}
+        onAccept={(value: string) =>
+          onChange({ target: { name: props.name, value } })
+        }
+        overwrite
+      />
+    );
+  }
+);
+
 function Test2EH() {
   const [isMedicareValid, setIsMedicareValid] = useState(false);
   const [isEHRIDValid, setIsEHRIDValid] = useState(false);
@@ -346,8 +366,16 @@ function Test2EH() {
         <div>
           <InputLabel>Height</InputLabel>
           <TextField
+            {...register("height")}
             variant='standard'
             FormHelperTextProps={{ sx: { color: "red" } }}
+            InputProps={{
+              inputComponent: HeightMask as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+              mask: "0'   00''",
+              placeholder: "0'   00''",
+            }}
           />
         </div>
 
@@ -464,6 +492,11 @@ function Test2EH() {
           <TextField
             variant='standard'
             helperText={errors.phoneNumber?.message}
+            InputProps={{
+              inputComponent: TextMaskCustom as React.ForwardRefExoticComponent<
+                CustomProps & React.RefAttributes<HTMLInputElement>
+              >,
+            }}
             FormHelperTextProps={{ sx: { color: "red" } }}
             {...register("phoneNumber")}
           />
