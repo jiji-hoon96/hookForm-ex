@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { FieldPath, Control, Controller } from "react-hook-form";
-import { PatientFormSchema } from "./test2Schema";
+import { PatientFormSchema } from "./addPatientSchema";
 
 interface Props {
   name: FieldPath<PatientFormSchema>;
@@ -45,7 +45,7 @@ const CustomSelect = ({
             {...field}
           >
             <MenuItem
-              value={itemValue ? itemValue : ""}
+              value={itemValue ?? ""}
               disabled
               style={{ display: "none" }}
             >

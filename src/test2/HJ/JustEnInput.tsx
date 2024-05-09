@@ -1,5 +1,5 @@
 import { Control, Controller, FieldPath } from "react-hook-form";
-import { PatientFormSchema } from "./test2Schema";
+import { PatientFormSchema } from "./addPatientSchema";
 import Input from "@mui/material/Input";
 
 interface Props {

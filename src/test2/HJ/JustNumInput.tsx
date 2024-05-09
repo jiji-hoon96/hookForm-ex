@@ -1,5 +1,5 @@
 import { Control, Controller, FieldPath } from "react-hook-form";
-import { PatientFormSchema } from "./test2Schema";
+import { PatientFormSchema } from "./addPatientSchema";
 import Input from "@mui/material/Input";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
   placeholder?: string;
   name: FieldPath<PatientFormSchema>;
   control: Control<PatientFormSchema>;
+  length?: number;
 }
 
 const JustNumInput = ({ id, name, control, placeholder }: Props) => {

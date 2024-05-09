@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PatientFormSchema, patientFormSchema } from "./test2Schema";
-import {
-  useForm,
-  SubmitHandler,
-  FieldPath,
-  Control,
-  Controller,
-} from "react-hook-form";
+import { PatientFormSchema, patientFormSchema } from "./addPatientSchema";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
@@ -17,13 +11,7 @@ import Button from "@mui/material/Button";
 import JustEnInput from "./JustEnInput";
 import CustomSelect from "./CustomSelect";
 import JustNumInput from "./JustNumInput";
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { FormControl, FormHelperText, Radio, RadioGroup } from "@mui/material";
 
 function Test2HJ() {
   const {
