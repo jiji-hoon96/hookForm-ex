@@ -1,18 +1,19 @@
-import sum from "./sum";
+// const { default: test } = require("node:test");
+// const sum = require("./sum.js");
 
-describe("adds 1 + 2 to equal 3", () => {
-  expect(sum(1, 2)).toEqual(3);
-});
-
-// describe("test", () => {
-//   const a = 1,
-//     b = 2;
-
-//   test("a + b는 3이다.", () => {
-//     expect(a + b).toEqual(3);
-//   });
+// test("adds 1 + 2 to equal 3", () => {
+//   expect(sum(1, 2)).toBe(3);
 // });
+
 // test 성공
+describe("test", () => {
+  const a = 1,
+    b = 2;
+
+  test("a + b는 3이다.", () => {
+    expect(a + b).toEqual(3);
+  });
+});
 
 /*
  describe('그룹 테스트 설명 문자열', () => {

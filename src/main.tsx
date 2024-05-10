@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 import Test2EH from "./test2/EH/test2";
-import Test2HJ from "./test2/HJ/test2";
+import addPatient from "./test2/HJ/addPatient";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: "patientCreate-HJ",
-    element: <Test2HJ />,
+    element: <addPatient />,
   },
 ]);
 
